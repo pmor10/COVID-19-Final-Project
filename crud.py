@@ -72,12 +72,16 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 
-def get_trackers_symptoms():
-    pass
+def get_symptoms():
+    """Return all symptoms by id"""
+
+    return Symptom.query.get(symptom_id)
 
 
 def get_saved_locations():
-    pass
+    """Return all saved locations"""
+
+    return SavedLocation.query.all()
 
 
 def update_user_email(email):
@@ -88,8 +92,9 @@ def update_user_email(email):
     db.session.commit()
 
 
-def update_user_password():
-    
+def update_user_password(password_hash):
+    """Update the user's password"""
+
     # Filter for the user that you want to update their email
     db.session.query(User).filter(User.user_id==user_id).update({"password_hash": password_hash})
     db.session.commit()
@@ -99,7 +104,7 @@ def delete_trackers():
     pass
 
 
-def saved_locations():
+def delete_saved_locations():
     pass
 
 
