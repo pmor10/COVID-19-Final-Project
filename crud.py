@@ -66,8 +66,10 @@ def get_user_by_email(email):
         return result
 
 
-def get_user_by_name():
-    pass
+def get_user_by_id(user_id):
+    """Return a user by primary key."""
+
+    return User.query.get(user_id)
 
 
 def get_trackers_symptoms():
