@@ -12,7 +12,7 @@ app.jinja_env.undefined = StrictUndefined
 def landingpage():
     """View Landing Page"""
 
-    return render_template('landingpage.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

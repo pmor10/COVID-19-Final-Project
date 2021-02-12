@@ -1,7 +1,7 @@
 """CRUD operations"""
 
 from model import db, User, Symptom, Tracker, TestingLocation, VaccineLocation, SavedLocation, connect_to_db
-
+from flask-login import LoginManager
 
 def create_user(username, email, password):
     """Create and return a new user."""
@@ -84,12 +84,15 @@ def update_user_email(email):
     """Update the user's email"""
     
     # Filter for the user that you want to update their email
-    db.session.query(User).filter(User.userid==userid).update({"email": email})
+    db.session.query(User).filter(User.user_id==user_id).update({"email": email})
     db.session.commit()
 
 
-def update_password():
-    pass
+def update_user_password():
+    
+    # Filter for the user that you want to update their email
+    db.session.query(User).filter(User.user_id==user_id).update({"password_hash": password_hash})
+    db.session.commit()
 
 
 def delete_trackers():
