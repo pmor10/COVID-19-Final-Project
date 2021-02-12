@@ -13,7 +13,6 @@ class User(db.Model):
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    fullname = db.Column(db.String(50), nullable= False)
     username = db.Column(db.String(256), unique=True)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(120), nullable=False)
@@ -29,16 +28,16 @@ class User(db.Model):
 class Symptom(db.Model):
     """A symptom."""
 
-    __tablename__ = 'symptoms'
+    __tablename__ = 'symptoms' 
 
     symptom_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    symptom_name = db.Column(db.String(120))
+    symptom_name = db.Column(db.String(100))
 
     tracker = db.relationship("Tracker", backref="symptoms")
 
 
     def __repr__(self):
-        return f'<Symptom symptom_name={self.symptom_name} severity={self.severity}>'
+        return f'<Symptom symptom_name={self.symptom_name}>'
         
 
 class Tracker(db.Model):

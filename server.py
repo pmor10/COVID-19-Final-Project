@@ -1,5 +1,5 @@
 # import crud
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, Blueprint, redirect)
 from model import connect_to_db
 from jinja2 import StrictUndefined
 
@@ -13,6 +13,7 @@ def landingpage():
     """View Landing Page"""
 
     return render_template('landingpage.html')
+
 
 if __name__ == '__main__':
     connect_to_db(app)
