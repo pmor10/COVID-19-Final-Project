@@ -65,12 +65,37 @@ def get_user_by_email(email):
 
         return result
 
+
+def get_user_by_name():
+    pass
+
+
+def get_trackers_symptoms():
+    pass
+
+
+def get_saved_locations():
+    pass
+
+
 def update_user_email(email):
     """Update the user's email"""
     
     # Filter for the user that you want to update their email
     db.session.query(User).filter(User.userid==userid).update({"email": email})
     db.session.commit()
+
+
+def update_password():
+    pass
+
+
+def delete_trackers():
+    pass
+
+
+def saved_locations():
+    pass
 
 
 if __name__ == '__main__':
