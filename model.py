@@ -17,6 +17,7 @@ class User(db.Model):
     email = db.Column(db.String(120), nullable=False)
     
     tracker = db.relationship("Symptom", secondary='symptom_tracker')
+    
     saved_vaccine_location = db.relationship("SavedVaccineLocation", backref='user')
     saved_testing_location = db.relationship("SavedTestingLocation", backref='user')
 
@@ -44,18 +45,18 @@ class SymptomTracker(db.Model):
 
     __tablename__ = 'symptom_tracker'
 
-    tracker_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    symptom_id = db.Column(db.Integer, db.ForeignKey('symptoms.symptom_id'))
+    #tracker_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    symptom_id = db.Column(db.Integer, db.ForeignKey('symptoms.symptom_id'), primary_key=True)
     symptom_date = db.Column(db.DateTime)
 
 
-    user = db.relationship('User', backref=db.backref('users_symptom_tracker'))
-    symptom = db.relationship('Symptom', backref=db.backref('symptom_symptom_tracker'))
+    user = db.relationship('User', backref=db.backref('saved_symptom'))
+    symptom = db.relationship('Symptom', backref=db.backref('saved_user'))
 
 
     def __repr__(self):
-        return f'<SymptomTracker tracker_id={self.tracker_id} user_id={self.user_id} symptom_id={self.symptom_id}>'    
+        return f'<SymptomTracker user_id={self.user_id} symptom_id={self.symptom_id} symptom_date={self.symptom_date} symptom_name={self.symptom.symptom_name}>'    
 
 
 class TestingLocation(db.Model):

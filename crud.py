@@ -1,6 +1,9 @@
 """CRUD operations"""
 
 from model import db, User, Symptom, SymptomTracker, TestingLocation, VaccineLocation, SavedTestingLocation, SavedVaccineLocation, connect_to_db
+from datetime import datetime
+
+
 def create_user(username, email, password):
     """Create and return a new user."""
 
@@ -11,38 +14,13 @@ def create_user(username, email, password):
 
     return user.user_id    
 
-def create_symptom(symptom):
-    """Create and return a symptom(s)"""
+def get_user_by_id(user_id):
+    """Return a user by primary key."""
 
-    symptom = Symptom(symptom_name=symptom)
+    return User.query.filter_by(user_id=user_id).first()
 
-    db.session.add(symptom)
-    db.session.commit()
-
-    return symptom
-
-
-def create_tracker(symptom_date, user_id, symptom_id):
-    """Create and return a new symptom tracker"""
-
-    tracker = SymptomTracker(symptom_date=symptom_date, user_id=user_id, symptom_id=symptom_id)
-
-    db.session.add(tracker)
-    db.session.commit()
-
-    return tracker
-
-
-def create_saved_locations(user_id, test_id):
-    """Create and return a saved location"""
-
-    saved_testing_location = SavedTestingLocation(user_id=user_id, test_id=test_id)
-
-    db.session.add(saved_testing_location)
-    db.session.commit()
-
-    return saved_testing_location
-
+def get_user_by_username(username):
+    return User.query.filter_by(username=username).first()
 
 def get_user_by_email(email):
     """Get user by email"""
@@ -57,62 +35,120 @@ def get_user_by_email(email):
         result = {
             'username':user.username,
             'email':user.email,
-            'password': user.password,
+            'password': user.password_hash,
             'user_id': user.user_id
         }
 
         return result
 
+def upd_user_email_by_email(email, new_email):
+    user = get_user_by_email(email)
+    user.email = new_email
+    db.session.commit() 
 
-def get_user_by_id(user_id):
-    """Return a user by primary key."""
+def upd_user_email_by_id(user_id, new_email):
+    user = get_user_by_id(user_id)
+    user.email = new_email
+    db.session.commit()
 
-    return User.query.get(user_id)
+def upd_user_password(user_id, old_password, new_password):
+    user = get_user_by_id(user_id)
 
+    if old_password == _get_user_password(user_id):
+        user.password_hash = new_password 
+        db.session.commit() 
 
-# def get_symptoms():
-#     """Return all symptoms by id"""
-
-#     return Symptom.query.get(symptom_id)
-
-############
-"Question"
-##############
-# def get_saved_locations():
-#     """Return all saved locations"""
-#     # have a user in session = you have user_id
-#     # a table that relates user_id to all their favorited locations
-    
-#     saved_locations = get_saved_locations(???)
-
-#     locations = []
-
-#     for location in locations:
-#         print()
+def _get_user_password(user_id):
+    user = get_user_by_id(user_id)
+    return user.password_hash
 
 
-# def update_user_email(email):
-#     """Update the user's email"""
-    
-#     # Filter for the user that you want to update their email
-#     db.session.query(User).filter(User.user_id==user_id).update({"email": email})
-#     db.session.commit()
+def create_symptom(symptom):
+    """Create and return a symptom(s)"""
+
+    symptom = Symptom(symptom_name=symptom)
+
+    db.session.add(symptom)
+    db.session.commit()
+
+    return symptom
+def get_symptoms():
+    """Return all symptoms by id"""
+    return Symptom.query.all()
+
+def get_symptom_by_id(symptom_id):
+    return Symptom.query.filter_by(symptom_id=symptom_id).first()
 
 
-# def update_user_password(password_hash):
-#     """Update the user's password"""
+def upd_symptom_by_id(symptom_id, symptom):
+    symptom_record = get_symptom_by_id(symptom_id)
+    symptom_record.symptom_name = symptom
+    db.session.commit()
 
-#     # Filter for the user that you want to update their email
-#     db.session.query(User).filter(User.user_id==user_id).update({"password_hash": password_hash})
-#     db.session.commit()
+def del_symptom_by_symptom(symptom):
+    Symptom.query.filter_by(symptom=symptom).delete()
+
+def del_symptom_by_id(symptom_id):
+    Symptom.query.filter_by(symptom_id=symptom_id).delete()
 
 
-def delete_trackers():
-    pass
 
 
-def delete_saved_locations():
-    pass
+
+# Symptom Tracker Section #
+
+def create_symptom_tracker(user_id, symptom_id, symptom_date=None):
+    """Create and return a new symptom tracker"""
+
+    if not symptom_date:
+        symptom_date = datetime.today()
+    tracker = SymptomTracker(user_id=user_id, symptom_id=symptom_id, symptom_date=symptom_date)
+
+    db.session.add(tracker)
+    db.session.commit()
+
+    return tracker
+
+def get_symptom_tracker(user_id):
+
+    return SymptomTracker.query.filter_by(user_id=user_id).all()
+
+def del_symptom_tracker(user_id, symptom_id):
+
+    SymptomTracker.query.filter(SymptomTracker.symptom_id==symptom_id, SymptomTracker.user_id==user_id).delete()
+
+# Testing Saved Location # 
+
+def create_testing_saved_locations(user_id, vaccine_id):
+    """Create and return a saved location"""
+
+    saved_testing_location = SavedTestingLocation(user_id=user_id, test_id=test_id)
+
+    db.session.add(saved_testing_location)
+    db.session.commit()
+
+    return saved_testing_location
+
+def del_testing_saved_locations(user_id, test_id):
+    SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.test_id==test_id).delete()
+
+
+# Vaccine Saved Location # 
+
+def create_vaccine_saved_locations(user_id, vaccine_id):
+    """Create and return a saved location"""
+
+    saved_vaccine_location = SavedVaccineLocation(user_id=user_id, vaccine_id=vaccine_id)
+
+    db.session.add(saved_vaccine_location)
+    db.session.commit()
+
+    return saved_vaccine_location
+
+def del_vaccine_saved_locations(user_id, vaccine_id):
+    SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).delete()
+
+
 
 
 if __name__ == '__main__':
