@@ -1,12 +1,10 @@
 """CRUD operations"""
 
-from model import db, User, Symptom, Tracker, TestingLocation, VaccineLocation, SavedLocation, connect_to_db
-from flask-login import LoginManager
-
+from model import db, User, Symptom, SymptomTracker, TestingLocation, VaccineLocation, SavedTestingLocation, SavedVaccineLocation, connect_to_db
 def create_user(username, email, password):
     """Create and return a new user."""
 
-    user = User(username=username, email=email, password=password)
+    user = User(username=username, email=email, password_hash=password)
 
     db.session.add(user)
     db.session.commit()
@@ -27,7 +25,7 @@ def create_symptom(symptom):
 def create_tracker(symptom_date, user_id, symptom_id):
     """Create and return a new symptom tracker"""
 
-    tracker = Tracker(symptom_date=symptom_date, user_id=user_id, symptom_id=symptom_id)
+    tracker = SymptomTracker(symptom_date=symptom_date, user_id=user_id, symptom_id=symptom_id)
 
     db.session.add(tracker)
     db.session.commit()
@@ -35,15 +33,15 @@ def create_tracker(symptom_date, user_id, symptom_id):
     return tracker
 
 
-def create_saved_locations(user_id, test_id, vaccine_id):
+def create_saved_locations(user_id, test_id):
     """Create and return a saved location"""
 
-    saved_location = SavedLocation(user_id=user_id, test_id=test_id, vaccine_id=vaccine_id)
+    saved_testing_location = SavedTestingLocation(user_id=user_id, test_id=test_id)
 
-    db.session.add(saved_location)
+    db.session.add(saved_testing_location)
     db.session.commit()
 
-    return saved_location
+    return saved_testing_location
 
 
 def get_user_by_email(email):
@@ -72,32 +70,41 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 
-def get_symptoms():
-    """Return all symptoms by id"""
+# def get_symptoms():
+#     """Return all symptoms by id"""
 
-    return Symptom.query.get(symptom_id)
+#     return Symptom.query.get(symptom_id)
 
-
-def get_saved_locations():
-    """Return all saved locations"""
-
-    return SavedLocation.query.all()
-
-
-def update_user_email(email):
-    """Update the user's email"""
+############
+"Question"
+##############
+# def get_saved_locations():
+#     """Return all saved locations"""
+#     # have a user in session = you have user_id
+#     # a table that relates user_id to all their favorited locations
     
-    # Filter for the user that you want to update their email
-    db.session.query(User).filter(User.user_id==user_id).update({"email": email})
-    db.session.commit()
+#     saved_locations = get_saved_locations(???)
+
+#     locations = []
+
+#     for location in locations:
+#         print()
 
 
-def update_user_password(password_hash):
-    """Update the user's password"""
+# def update_user_email(email):
+#     """Update the user's email"""
+    
+#     # Filter for the user that you want to update their email
+#     db.session.query(User).filter(User.user_id==user_id).update({"email": email})
+#     db.session.commit()
 
-    # Filter for the user that you want to update their email
-    db.session.query(User).filter(User.user_id==user_id).update({"password_hash": password_hash})
-    db.session.commit()
+
+# def update_user_password(password_hash):
+#     """Update the user's password"""
+
+#     # Filter for the user that you want to update their email
+#     db.session.query(User).filter(User.user_id==user_id).update({"password_hash": password_hash})
+#     db.session.commit()
 
 
 def delete_trackers():

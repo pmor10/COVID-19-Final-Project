@@ -3,20 +3,13 @@ from random import choice, randint
 
 import crud
 import model
+import server 
 
+# os.system('dropdb postgres')
+# os.system('createdb postgres')
 
 model.connect_to_db(server.app)
 model.db.create_all()
-
-def add_symptom(symptom):
-
-    symptom_obj = crud.create_symptom(symptom)
-
-    db.session.add(symptom_obj)
-    db.session.commit()
-
-    return symptom_obj
-
 
 symptoms = ['chills', 
             'headache', 
@@ -28,9 +21,8 @@ symptoms = ['chills',
             'cough', 
             'sore_throat']
 
-for sympt in symptoms:
-    add_symptom(symptom)
-
+for s in symptoms:
+    crud.create_symptom(s)
 
 
 # create 10 dummy users
@@ -40,5 +32,7 @@ for n in range(10):
     email = f'user{n}@test.com'
     password = 'test'
 
-    user = crud.create_user(username, email, password)
+    crud.create_user(username, email, password)
 
+# import testing_data_load
+# import vaccine_data_load

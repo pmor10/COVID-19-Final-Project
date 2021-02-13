@@ -4,12 +4,11 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from setting import DB_INFO
 
-
 db = SQLAlchemy()
 
 class User(db.Model):
     """A user."""
-
+    
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -17,10 +16,10 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(120), nullable=False)
     
-    tracker = db.relationship("Tracker", backref="users")
-    saved_location = db.relationship("SavedLocation", backref="users")
+    tracker = db.relationship("Symptom", secondary='symptom_tracker')
+    saved_vaccine_location = db.relationship("SavedVaccineLocation", backref='user')
+    saved_testing_location = db.relationship("SavedTestingLocation", backref='user')
 
-    
     def __repr__(self):
         return f'<User user_id={self.user_id} username={self.username} email={self.email}>'
 
@@ -33,17 +32,17 @@ class Symptom(db.Model):
     symptom_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     symptom_name = db.Column(db.String(100))
 
-    tracker = db.relationship("Tracker", backref="symptoms")
+    tracker = db.relationship("User", secondary='symptom_tracker')
 
 
     def __repr__(self):
         return f'<Symptom symptom_name={self.symptom_name}>'
-        
+    
 
-class Tracker(db.Model):
+class SymptomTracker(db.Model):
     """A symptom tracker."""
 
-    __tablename__ = 'trackers'
+    __tablename__ = 'symptom_tracker'
 
     tracker_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
@@ -51,8 +50,12 @@ class Tracker(db.Model):
     symptom_date = db.Column(db.DateTime)
 
 
+    user = db.relationship('User', backref=db.backref('users_symptom_tracker'))
+    symptom = db.relationship('Symptom', backref=db.backref('symptom_symptom_tracker'))
+
+
     def __repr__(self):
-        return f'<Tracker tracker_id={self.tracker_id} user_id={self.user_id} symptom_id={self.symptom_id}>'    
+        return f'<SymptomTracker tracker_id={self.tracker_id} user_id={self.user_id} symptom_id={self.symptom_id}>'    
 
 
 class TestingLocation(db.Model):
@@ -73,11 +76,22 @@ class TestingLocation(db.Model):
     phone_number = db.Column(db.String(20))
     city = db.Column(db.String(100))
 
-    saved_location = db.relationship("SavedLocation", backref="test_locations")
-
 
     def __repr__(self):
         return'<Testing Location organization_id={self.organization_id} alternate_name={self.alternate_name} address={self.address}>' 
+
+
+class SavedTestingLocation(db.Model):
+    """A Saved Location."""
+
+    __tablename__ = 'saved_testing_locations'
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    test_id = db.Column(db.Integer, db.ForeignKey('test_locations.test_id'), primary_key=True)
+
+
+    def __repr__(self):
+        return '<Saved Location location_id={self.location_id} vaccine_id={self.vaccine_id} user_id={self.user_id}>'
 
 
 class VaccineLocation(db.Model):
@@ -94,22 +108,18 @@ class VaccineLocation(db.Model):
     state = db.Column(db.String(100))
     zip_code = db.Column(db.Integer, nullable=False)
 
-    saved_location = db.relationship("SavedLocation", backref="vaccine_locations")
-
 
     def __repr__(self):
         return'<Vaccine Location name={self.name} zip_code={self.zip_code} vaccine_id={self.vaccine_id}>'
 
 
-class SavedLocation(db.Model):
+class SavedVaccineLocation(db.Model):
     """A Saved Location."""
 
-    __tablename__ = 'saved_locations'
+    __tablename__ = 'saved_vaccine_locations'
     
-    location_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    test_id = db.Column(db.Integer, db.ForeignKey('test_locations.test_id'))
-    vaccine_id = db.Column(db.Integer, db.ForeignKey('vaccine_locations.vaccine_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    vaccine_id = db.Column(db.Integer, db.ForeignKey('vaccine_locations.vaccine_id'), primary_key=True)
 
 
     def __repr__(self):
