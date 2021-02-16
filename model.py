@@ -3,17 +3,22 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from setting import DB_INFO
+from flask_login import UserMixin
+
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """A user."""
     
+    def get_id(self):
+        return self.user_id
+        
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(256), unique=True)
-    password_hash = db.Column(db.String(128))
+    password = db.Column(db.String(128))
     email = db.Column(db.String(120), nullable=False)
     
     tracker = db.relationship("Symptom", secondary='symptom_tracker')
