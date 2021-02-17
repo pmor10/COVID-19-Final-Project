@@ -81,6 +81,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+#====================== Getting data for testing and vaccine locations =====================#
 def format_data(d, key):
     assert key in ['test_id', 'vaccine_id'], "Please use the correct attribute."
 
