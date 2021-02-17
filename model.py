@@ -84,7 +84,7 @@ class TestingLocation(db.Model):
 
 
     def __repr__(self):
-        return'<Testing Location organization_id={self.organization_id} alternate_name={self.alternate_name} address={self.address}>' 
+        return'<Testing Location test_id={self.test_id} organization_id={self.organization_id} alternate_name={self.alternate_name} address={self.address} state={self.state_province} zip_code={self.zip_code} city={self.city} phone_number={self.phone_number}>' 
 
 
 class SavedTestingLocation(db.Model):

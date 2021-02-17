@@ -28,22 +28,7 @@ def get_user_by_username(username):
 def get_user_by_email(email):
     """Get user by email"""
     
-    user = User.query.filter_by(email=email).first()
-
-    if user is None:
-        result = {'username': None}
-        return result
-
-    else:
-        result = {
-            'username':user.username,
-            'email':user.email,
-            'password': user.password,
-            'user_id': user.user_id
-        }
-
-        return result
-
+    return User.query.filter_by(email=email).first()
 
 def upd_user_email_by_email(email, new_email):
     user = get_user_by_email(email)
@@ -128,7 +113,12 @@ def del_symptom_tracker(user_id, symptom_id):
     SymptomTracker.query.filter(SymptomTracker.symptom_id==symptom_id, SymptomTracker.user_id==user_id).delete()
 
 
-#=================== Testing Saved Location ========================# 
+#=================== Testing Location ========================# 
+def get_testing_location_by_zipcode(zip_code):
+
+    return TestingLocation.query.filter_by(zip_code=zip_code).all()
+
+
 def create_testing_saved_locations(user_id, vaccine_id):
     """Create and return a saved location"""
 
@@ -144,7 +134,12 @@ def del_testing_saved_locations(user_id, test_id):
     SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.test_id==test_id).delete()
 
 
-#======================== Vaccine Saved Location ======================# 
+#======================== Vaccine Location ======================# 
+def get_vaccine_location_by_zipcode(zip_code):
+
+    return VaccineLocation.query.filter_by(zip_code=zip_code).all()
+
+
 def create_vaccine_saved_locations(user_id, vaccine_id):
     """Create and return a saved location"""
 

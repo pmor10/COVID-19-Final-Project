@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Vaccine Locations</h2>
+
+<form id="vaccine-location-form">
+  <div class="form-group">
+    Address:
+    <input class="form-control" type="text" name="zipcode" id="zipcode-field" placeholder="zipcode">
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" type="submit">Find</button>
+  </div>
+</form>
+
+<div id="location-info">
+  {% for v in data.values() %}
+    {{v}}
+  {% endfor %}
+</div>
+{% endblock %}
+
+
