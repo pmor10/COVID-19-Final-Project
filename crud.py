@@ -119,7 +119,7 @@ def get_testing_location_by_zipcode(zip_code):
     return TestingLocation.query.filter_by(zip_code=zip_code).all()
 
 
-def create_testing_saved_locations(user_id, vaccine_id):
+def create_testing_saved_locations(user_id, test_id):
     """Create and return a saved location"""
 
     saved_testing_location = SavedTestingLocation(user_id=user_id, test_id=test_id)
@@ -130,8 +130,14 @@ def create_testing_saved_locations(user_id, vaccine_id):
     return saved_testing_location
 
 
+def get_testing_saved_locations(user_id):
+
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id).all()
+
+
 def del_testing_saved_locations(user_id, test_id):
-    SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.test_id==test_id).delete()
+
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.test_id==test_id).delete()
 
 
 #======================== Vaccine Location ======================# 
@@ -151,8 +157,12 @@ def create_vaccine_saved_locations(user_id, vaccine_id):
     return saved_vaccine_location
 
 
+def get_vaccine_saved_locations(user_id):
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id).all()
+
+
 def del_vaccine_saved_locations(user_id, vaccine_id):
-    SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).delete()
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).delete()
 
 
 

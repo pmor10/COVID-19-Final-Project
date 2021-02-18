@@ -2,25 +2,41 @@
 
 {% block content %}
 <h2>Testing Locations</h2>
+{% if user_id %}
+  <h3>Logged in as user {{user_id}}</h3>
+{% endif %}
 
-<form id="testing-location-form">
-  <div class="form-group">
-    Zipcode:
-    <input class="form-control" type="text" name="zipcode" id="zipcode-field" placeholder="zipcode">
+<div class="row">
+  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-3">
+    <form id="testing-location-form">
+      <div class="form-group">
+        Zipcode:
+        <input class="form-control" type="text" name="zipcode" id="zipcode-field" placeholder="zipcode">
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Find</button>
+      </div>
+    </form>
+
+      <div class="well">
+        <div id="location-info">
+          <!-- {{data}} -->
+          {% for v in data.values() %}
+      
+              <!-- <p>{{v.get('address')}}</p> -->
+              {{v}}
+      
+          {% endfor %}
+      </div>
+        <a class="btn btn-primary" href="/add_saved_location/">
+          Add
+        </a>
+
+      </div>
   </div>
-  <div class="form-group">
-    <button class="btn btn-primary" type="submit">Find</button>
-  </div>
-</form>
-
-<div id="location-info">
-    {% for v in data.values() %}
-
-        <!-- <p>{{v.get('address')}}</p> -->
-        {{v}}
-
-    {% endfor %}
 </div>
 {% endblock %}
+
+
 
 
