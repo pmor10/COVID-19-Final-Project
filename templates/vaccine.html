@@ -1,25 +1,48 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}vaccine Locations{% endblock %}
 
 {% block content %}
-<h2>Vaccine Locations</h2>
-
-<form id="vaccine-location-form">
-  <div class="form-group">
-    Address:
-    <input class="form-control" type="text" name="zipcode" id="zipcode-field" placeholder="zipcode">
-  </div>
-  <div class="form-group">
-    <button class="btn btn-primary" type="submit">Find</button>
-  </div>
-</form>
-
-<div id="location-info">
-  
-  {% for v in data.values() %}
-    {{v}}
-    
-  {% endfor %}
+<div class="conainter-fluid">
+    <div id="vaccinesMap"></div>
 </div>
+<div class="container mt-5">
+    <div class="row">
+        <h1 id="vaccinesTitle">Vaccine Locations</h1>
+    </div>
+    <div class="row">
+        <p class="justifyText">Search for vaccine locations by zipcode.</p>
+        <form class="form-inline" action="/vaccine" method="GET" id="vaccineSearchForm">
+            <div class="form-group">
+                <label for="zip_code">Search: </label>
+                    <input class="form-control mx-sm-3" type="text" name="zip_code" id="zip_code" required>
+                <button type="submit" id="vaccinesearchButton" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <p class="alert alert-primary" id="vaccinesErrorMessage"><small><a href="/signup">Sign Up</a> or <a href="/login">Log In</a> to enable favoriting vaccines.</small></p>
+    </div>
+</div>
+
+        <div id="vaccinesResults">
+            <form id="vaccine_content" action='/add_vaccine_site' method="post">
+                {% for vaccine_id, v in data.items() %}
+                    <ul>
+                        {{ v['name'] }}
+                        {{ v['address'] }}
+                        {{ v['state'] }}
+                        {{ v['zip_code'] }}
+                    </ul>
+                    <button id="add_button" type="button" class="save_vaccine_location" value="{{ vaccine_id }}" >Save Location</button>
+                {% endfor %}
+            </form>
+        </div>
+        <div id="vaccine_info"></div>
 {% endblock %}
 
-
+{% block scripts %}
+    <script src="/static/js/vaccine.js"></script>
+{% endblock %}

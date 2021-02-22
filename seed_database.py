@@ -26,13 +26,13 @@ for s in symptoms:
 
 
 # create 10 dummy users
-for n in range(10):
+# for n in range(10):
 
-    username = f'user{n}'
-    email = f'user{n}@test.com'
-    password = 'test'
+#     username = f'user{n}'
+#     email = f'user{n}@test.com'
+#     password = 'test'
 
-    crud.create_user(username, email, password)
+#     crud.create_user(username, email, password)
 
 # import testing_data_load
 # import vaccine_data_load
@@ -63,13 +63,13 @@ print(s1)
 # print(crud.get_symptom_by_id(1))
 
 
-crud.create_user('pari', 'pari_morton@email.com', 'CuddlesTheCatIsCool')
+# crud.create_user('pari', 'pari_morton@email.com', 'CuddlesTheCatIsCool')
 
-pari = crud.get_user_by_email('pari_morton@email.com')
-print(pari)
-crud.upd_user_password(11, 'CuddlesTheCatIsCool', 'ButJasmineIsTheBestest')
+# pari = crud.get_user_by_email('pari_morton@email.com')
+# print(pari)
+# crud.upd_user_password(11, 'CuddlesTheCatIsCool', 'ButJasmineIsTheBestest')
 
-pari = crud.get_user_by_id(11)
-print(pari)
+# pari = crud.get_user_by_id(11)
+# print(pari)
 
-print(crud._get_user_password(11))
+# print(crud._get_user_password(11))

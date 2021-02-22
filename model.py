@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(256), unique=True)
     password = db.Column(db.String(128))
     email = db.Column(db.String(120), nullable=False)
-    
+    salt = db.Column(db.String(300), nullable=False)
     tracker = db.relationship("Symptom", secondary='symptom_tracker')
     
     saved_vaccine_location = db.relationship("SavedVaccineLocation", backref='user')
@@ -42,7 +42,7 @@ class Symptom(db.Model):
 
 
     def __repr__(self):
-        return f'<Symptom symptom_name={self.symptom_name}>'
+        return f'<Symptom symptom_name={self.symptom_name} symptom_id={self.symptom_id} >'
     
 
 class SymptomTracker(db.Model):
@@ -97,7 +97,7 @@ class SavedTestingLocation(db.Model):
 
 
     def __repr__(self):
-        return '<Saved Location location_id={self.location_id} vaccine_id={self.vaccine_id} user_id={self.user_id}>'
+        return '<Saved Location test_id={self.test_id}  user_id={self.user_id}>'
 
 
 class VaccineLocation(db.Model):
@@ -116,7 +116,7 @@ class VaccineLocation(db.Model):
 
 
     def __repr__(self):
-        return'<Vaccine Location name={self.name} zip_code={self.zip_code} vaccine_id={self.vaccine_id}>'
+        return'<Vaccine Location name={self.name} Location address={self.address} state={self.state} zip_code={self.zip_code} vaccine_id={self.vaccine_id}>'
 
 
 class SavedVaccineLocation(db.Model):
@@ -129,10 +129,10 @@ class SavedVaccineLocation(db.Model):
 
 
     def __repr__(self):
-        return '<Saved Location location_id={self.location_id} vaccine_id={self.vaccine_id} user_id={self.user_id}>'
+        return '<Saved vaccine_id={self.vaccine_id} user_id={self.user_id}>'
 
 
-def connect_to_db(flask_app, db_uri=DB_INFO, echo=True):
+def connect_to_db(flask_app, db_uri=DB_INFO, echo=False):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

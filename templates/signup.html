@@ -1,32 +1,95 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends 'base.html' %}
 
-{% block title %}
-Sign Up
-{% endblock %}
-
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
-{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
-    <div class="container">
-      <form class="form-signin" method="POST" action="/signup">
-        <h2 class="form-signin-heading">Sign Up</h2>
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.username) }}
-        {{ wtf.form_field(form.email) }}
-        {{ wtf.form_field(form.password) }}
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification text-danger">
-                {{ messages[0] }} Go to <a href="{{ url_for('login') }}">login page</a>.
-            </div>
-        {% endif %}
-        {% endwith %}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-      </form>
+<div class="container mt-5">
+  <div class="row">
+    <h1>Sign Up</h1>
+  </div>
+  <div class="row">
+    <p>Sign up to save locations and track your symptoms.</p>
+  </div>
+  <div class="row">
+    <form id="signUpForm" action="/signup" method="POST">
+          
+        <div class="form-group row">
+          <label for="signUpEmail" class="col-sm-2 col-form-label">Email:<sup><b>*</b></sup></label>
+          <div class="col-sm-10">
+            <input type="email" 
+                   name="email"
+                   id="signUpEmail"
+                   required
+                   class="form-control"
+                   placeholder="email@domain.com">
+          </div>
+        </div>
 
-    </div> <!-- /container -->
+
+        <div class="form-group row">
+          <label for="signUpUsername" class="col-sm-2 col-form-label">Username:<sup><b>*</b></sup></label>
+          <div class="col-sm-10">
+              <input type="text" 
+                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                     title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
+                     id="signUpUsername" 
+                     name="username" 
+                     required
+                     class="form-control"
+                     placeholder="Username"
+                     aria-describedby="usernameHelp">
+              <small id="usernameHelp" class="form-text text-muted">Username must contain at least one number and one uppercase and lowercase letter, and at lease 8 or more characters.</small><br/>
+              <span class="text-danger">{{error}}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="signUpPassword1" class="col-sm-2 col-form-label">Password:<sup><b>*</b></sup></label>
+          <div class="col-sm-10">
+              <input type="password" 
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                  id="signUpPassword1" 
+                  name="password1" 
+                  required
+                  class="form-control"
+                  placeholder="Password"
+                  aria-describedby="password1Help">
+              <small id="password1Help" class="form-text text-muted">Password must contain at least one number and one uppercase and lowercase letter, and at lease 8 or more characters.</small>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <label for="signUpPassword2" class="col-sm-2 col-form-label">Re-enter password:<sup><b>*</b></sup></label>
+          <div class="col-sm-10">
+              <input type="password" 
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                      title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
+                      id="signUpPassword2" 
+                      name="password2" 
+                      required
+                      class="form-control"
+                      placeholder="Password"
+                      aria-describedby="password2Help">
+              <small id="password2Help" class="form-text text-muted">Password and re-entered password must match.</small>
+          </div>
+        </div>
+
+        <input type="submit" 
+               value="Submit"
+               class="btn btn-primary">
+    </form>
+  </div>
+
+  <div class="row mt-3">
+    <p id="signUpErrorMessage"></p>
+  </div>
+  <div class="row">
+    <p>Already signed up? Login <a href="/login">here</a>.</p>
+  </div>
+</div>
+{% endblock %}
+{% block personalScripts %}
+    <!-- Personal scripts -->
+    <script src="/static/js/signup.js"></script>
 {% endblock %}

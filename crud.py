@@ -4,10 +4,10 @@ from model import db, User, Symptom, SymptomTracker, TestingLocation, VaccineLoc
 from datetime import datetime
 
 
-def create_user(username, email, password):
+def create_user(username, email, password, salt):
     """Create and return a new user."""
 
-    user = User(username=username, email=email, password=password)
+    user = User(username=username, email=email, password=password, salt=salt)
 
     db.session.add(user)
     db.session.commit()
@@ -22,6 +22,7 @@ def get_user_by_id(user_id):
 
 
 def get_user_by_username(username):
+    """This returns the username value from the database."""
     return User.query.filter_by(username=username).first()
 
 
@@ -34,7 +35,7 @@ def upd_user_email_by_email(email, new_email):
     user = get_user_by_email(email)
     user.email = new_email
     db.session.commit() 
-
+    
 
 def upd_user_email_by_id(user_id, new_email):
     user = get_user_by_id(user_id)
@@ -62,7 +63,7 @@ def create_symptom(symptom):
 
     db.session.add(symptom)
     db.session.commit()
-
+    
     return symptom
 
 
@@ -99,11 +100,12 @@ def create_symptom_tracker(user_id, symptom_id, symptom_date=None):
 
     db.session.add(tracker)
     db.session.commit()
-
+    
+    
     return tracker
 
 
-def get_symptom_tracker(user_id):
+def get_symptom_tracker_user_id_symptoms(user_id):
 
     return SymptomTracker.query.filter_by(user_id=user_id).all()
 
@@ -118,6 +120,10 @@ def get_testing_location_by_zipcode(zip_code):
 
     return TestingLocation.query.filter_by(zip_code=zip_code).all()
 
+def get_testing_location_by_test_id(test_id):
+
+    return TestingLocation.query.filter_by(test_id=test_id).first()
+
 
 def create_testing_saved_locations(user_id, test_id):
     """Create and return a saved location"""
@@ -126,24 +132,33 @@ def create_testing_saved_locations(user_id, test_id):
 
     db.session.add(saved_testing_location)
     db.session.commit()
-
+    
     return saved_testing_location
 
 
 def get_testing_saved_locations(user_id):
 
-    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id).all()
+    return SavedTestingLocation.query.filter(SavedTestingLocation.user_id==user_id).all()
+
+def check_testing_saved_location_in_favorites(user_id, test_id):
+
+    return SavedTestingLocation.query.filter(SavedTestingLocation.user_id==user_id, SavedTestingLocation.test_id==test_id).first()
 
 
 def del_testing_saved_locations(user_id, test_id):
 
-    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.test_id==test_id).delete()
+    return SavedTestingLocation.query.filter(SavedTestingLocation.user_id==user_id, SavedTestingLocation.test_id==test_id).delete()
 
 
 #======================== Vaccine Location ======================# 
 def get_vaccine_location_by_zipcode(zip_code):
 
     return VaccineLocation.query.filter_by(zip_code=zip_code).all()
+
+
+def get_vaccine_location_by_vaccine_id(vaccine_id):
+
+    return VaccineLocation.query.filter_by(vaccine_id=vaccine_id).first()
 
 
 def create_vaccine_saved_locations(user_id, vaccine_id):
@@ -153,12 +168,17 @@ def create_vaccine_saved_locations(user_id, vaccine_id):
 
     db.session.add(saved_vaccine_location)
     db.session.commit()
-
+    
     return saved_vaccine_location
 
 
 def get_vaccine_saved_locations(user_id):
     return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id).all()
+
+
+def check_vaccine_saved_location_in_favorites(user_id, vaccine_id):
+
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).first()    
 
 
 def del_vaccine_saved_locations(user_id, vaccine_id):

@@ -1,88 +1,165 @@
+import os
 import crud
 import login_form
+import binascii
+import hashlib
+import datetime
 
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import InputRequired, Email, Length
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
+SALT_SIZE = 16
 
 app = Flask(__name__)
 app.secret_key = "dev"
 bootstrap = Bootstrap(app)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return crud.get_user_by_id(user_id)
-
 
 @app.route('/')
-def landingpage():
-    """View Landing Page"""
+def index():
+    """Display Landing Page"""
 
     return render_template('index.html')
 
 
-#====================== Login =====================#
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+#====================== Signup =====================#
+@app.route('/signup', methods=['GET'])
+def display_signup_form():
+    """ Display sign Up page. """
 
-    form = login_form.LoginForm()
-    
-    if form.validate_on_submit():
-        user = crud.get_user_by_username(username=form.username.data)
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                
-                session['user'] = user.user_id                
-                
-                return redirect('profile')
-        
-        flash('Invalid username or password')
-        # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-
-    return render_template('login.html', form=form)
+    return render_template('signup.html')
 
 
-#====================== Register =====================#
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """ Sign up new user and then redirect to homepage. """
 
-    form = login_form.RegisterForm()
+ 
+    email = request.form.get('email')
+    username = request.form.get('username')
 
-    if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        username = crud.get_user_by_username(form.username.data)
-        email = crud.get_user_by_email(form.email.data)
-        if not username and not email:
-            crud.create_user(username=form.username.data, email=form.email.data, password=hashed_password)
-            flash('New user has been created!')
-        if username:
-            flash(f'Username {form.username.data} already exists!')
+    if username == crud.get_user_by_username(username):
+        error = 'User already exists.'
+        return render_template('signup.html', error=error)
+    else:
+        flash('User is available.')
+
+    password = request.form.get('password1')
+    salt = binascii.hexlify(os.urandom(SALT_SIZE))
+    password_hash = hashlib.sha256(password.encode('utf-8') + salt).hexdigest()
+
+    crud.create_user(username, email, password_hash, salt=salt.decode('utf-8'))
+    db_user = crud.get_user_by_username(username)
+    session['user_id'] = db_user.user_id
+    flash(f'{username} successfully signed up.')
+    return redirect('/')
+
+
+# @app.route('/validate_signup', methods=['GET'])
+# def user_exists():
+#     """ Determines if username given already exists in the database. """
+
+#     if 'username' not in request.args:
+#         return jsonify({'username_found': False})
+
+#     username = request.args.get('username')
+#     if crud.get_user_by_username(username) is not None:
+#         return jsonify({'username_found': True})
+#     return jsonify({'username_found': False})
+
+#====================== Login =====================#
+@app.route('/login', methods=['GET'])
+def display_login_form():
+    """ Display log in page. """
+
+    return render_template('login.html')
+
+
+
+@app.route('/login', methods=['POST'])
+def validate_login_credentials():
+    """ Take username and password and validate them. """
+
+    username = request.form.get('username')
+    password_entered_plain = request.form.get('password')
+
+    result = {}
+    # Does username exist?
+    user = crud.get_user_by_username(username)
+    if user is None:
+        result['username_found'] = False
+        result['valid_login'] = None
+        return jsonify(result)
+
+    # If yes, does password match username?
+    result['username_found'] = True
+    salt = user.salt.encode('utf-8')
+
+    password_entered_hash = hashlib.sha256(password_entered_plain.encode('utf-8') + salt).hexdigest()
+    password_db_hash =  crud._get_user_password(user.user_id)
+
+    if password_db_hash == password_entered_hash:
+        result['valid_login'] = True
+        # log user in by assing their id to the session
+        session['user_id'] = user.user_id
+
+        return redirect('/user_profile')
+
         
-        if email:
-            flash(f'Email {form.email.data} already exists!')
-                
-    return render_template('signup.html', form=form)
+    else:
+        result['valid_login'] = False
+
+    return jsonify(result)
+
+
+@app.route('/user_profile')
+def display_user_profile():
+    """Display user profile page"""
+
+    if 'user_id' in session:
+
+        user_id = session.get('user_id', None)
+        user = crud.get_user_by_id(user_id)
+
+        return render_template('user_profile.html', user=user)
+
+    flash('Sign Up or Log In in order to see your user profile.')
+    return redirect('/')
 
 
 #====================== Logout =====================#
 @app.route('/logout')
-@login_required
 def logout():
-    del session['user']
-    logout_user()
-    return redirect(url_for('index'))
+    """ Logout the current logged in user. """
+    if 'user_id' in session:
+
+        flash(f'{session["user_id"]} successfully logged out.')
+        del session['user_id']
+
+    return redirect('/')
+    # return jsonify('logged out')
+
+#====================== User Profile =====================#
+@app.route('/user_profile', methods=['POST'])
+def edit_user_profile():
+    """Save any changes the user made to their profile"""
+
+    if 'user_id' in session:
+        user_id = session.get('user_id')
+        email = request.form.get('email')
+
+
+        flash('User profile saved.')
+        return redirect('/')
+
+    flash('Sign Up or Log In in order to see your user profile.')
+    return redirect('/')
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    """ Changes user password and redirects to home. """
+
 
 #====================== Getting data for testing and vaccine locations =====================#
 def format_data(d, key):
@@ -102,7 +179,7 @@ def format_data(d, key):
     """
     # Checks to see if the key passed in matches the primary key from the
     # VaccineLocation or TestingLocation model.
-    assert key in ['test_id', 'vaccine_id'], "Please use the correct attribute."
+    assert key in ['test_id', 'vaccine_id', 'symptom_id'], "Please use the correct attribute."
 
     # This will hold our data from the crud query.
     data = {}
@@ -134,7 +211,7 @@ def format_data(d, key):
                 r[attribute] = getattr(row, attribute)
 
                 # Printing the attributes to make sure we are not bringing in anything we don't want.
-                print('***', str(attribute), '***')
+                
         # Lastly, we want to tie each r dict(), that stores our data, to the test_id/vaccine_id found in our `key` parameter.
 
         data[getattr(row, key)] = r
@@ -143,113 +220,189 @@ def format_data(d, key):
     
 
 #====================== Testing =====================#
-@app.route('/testing', methods=['GET', 'POST'])
-def search_testing():
-    """Return an address for this zipcode"""
 
-    zip_code = request.args.get('zipcode') 
+@app.route('/testing')
+def search_testing():
+    """Get list of testing locations"""
+
+    zip_code = request.args.get('zip_code')
     testing_info = crud.get_testing_location_by_zipcode(zip_code)
     data = format_data(d=testing_info, key='test_id')
-    # if 'user' in session:
-    #     print(session['user'])
-    if 'user' in session:
-        user_id = session['user']
+
+    if 'user_id' in session:
+        user_id = session['user_id']
     else:
         user_id = None
+        
     return render_template('testing.html', data=data, user_id=user_id)
 
 
-#====================== Saved Testing Locations =====================#
-@app.route('/add_testing_location')
-def add_testing_location(test_id):
 
-    """Add a test location to profile and redirect to profile page.
+@app.route('/add_testing_site', methods=['POST'])
+def add_testing_site():
+    """Add testing location to the database"""
+    test_id = request.form.get("test_id")
+    favorite = { 
+                    'status': None,
 
-    When a location is added to the profile, redirect browser to the profile
-    page and display a confirmation message: 'Location just added to your profile.'."""
+                }
+    try:
+        if 'user_id' in session:
+            user_id = session['user_id']
+
+            already_favorited = crud.check_testing_saved_location_in_favorites(user_id, test_id)
+
+            if already_favorited:
+
+                favorite['status'] = 'already_favorited'
+                flash('Already saved to favorites.')
+                return favorite
+            else:
+                favorite['status'] = 'added'
+                saved_location = crud.create_testing_saved_locations(user_id, test_id) 
+                location = crud.get_testing_location_by_test_id(test_id)
+                msg = f"Testing Location {location.alternate_name} saved to profile!"
+                flash(msg)
+                return favorite 
+
+
+        else:
+            flash('Please login!')
+            msg = "Please login"
+            flash(msg)
+            # return redirect('/login')
+    except Exception as e:
+        msg = f"Error. Tried adding {test_id} to db failed: \n {e}."
+        flash(msg)
+        return msg 
+
+        
+    return msg 
+    
 
 
 
-    # Show user success message on next page load
-    flash("The vaccine location just added to your profile.")
 
 
-    return redirect('/profile')    
 
 
 #====================== Vaccine =====================#
-@app.route('/vaccine', methods=['GET', 'POST'])
+@app.route('/vaccine')
 def search_vaccine():
-    """Return an address for this zipcode"""
+    """Get list of vaccine locations"""   
 
-    zip_code = request.args.get('zipcode') 
+    zip_code = request.args.get('zip_code')
     vaccine_info = crud.get_vaccine_location_by_zipcode(zip_code)
-    data = format_data(d=vaccine_info, key='test_id')
+    data = format_data(d=vaccine_info, key='vaccine_id')
 
-    # if 'user' in session:
-    #     print(session['user'])
-    if 'user' in session:
-        user_id = session['user']
+
+    if 'user_id' in session:
+        user_id = session['user_id']
     else:
         user_id = None
-
+        
     return render_template('vaccine.html', data=data, user_id=user_id)
 
 
-#====================== Saved Vaccine Locations =====================#
-@app.route('/add_vaccine_location')
-def add_saved_location(vaccine_id):
 
-    """Add a vaccine location to profile and redirect to profile page.
+@app.route('/add_vaccine_site', methods=['POST'])
+def add_vaccine_site():
+    """Add vaccine location to the database"""
+    vaccine_id = request.form.get("vaccine_id")
+    favorite = { 
+                    'status': None,
 
-    When a location is added to the profile, redirect browser to the profile
-    page and display a confirmation message: 'Location just added to your profile.'."""
+                }
+    try:
+        if 'user_id' in session:
+            user_id = session['user_id']
 
-    # Check if we have a cart in the session and if not, add one
-    # Also, bind the cart to the name 'cart' for easy reference below
-    if 'cart' in session:
-        cart = session['cart']
-    else:
-        cart = session['cart'] = {}
+            already_favorited = crud.check_testing_saved_location_in_favorites(user_id, vaccine_id)
 
-    # We could also do this with setdefault:
-    # cart = session.setdefault("cart", {})
+            if already_favorited:
 
-    # Add melon to cart - either increment the count (if melon already in cart)
-    # or add to cart with a count of 1
-    cart[location_id] = cart.get(vaccine_id, 0) + 1
-
-    # Print cart to the terminal for testing purposes
-    # print("cart:")
-    # print(cart)
-
-    # Show user success message on next page load
-    flash("The vaccine location just added to your profile.")
+                favorite['status'] = 'already_favorited'
+                flash('Already saved to favorites.')
+                return favorite
+            else:
+                favorite['status'] = 'added'
+                saved_location = crud.create_vaccine_saved_locations(user_id, vaccine_id) 
+                location = crud.get_vaccine_location_by_vaccine_id(vaccine_id)
+                msg = f"Vaccine Location {location.name} saved to profile!"
+                flash(msg)
+                return favorite 
 
 
-    return render_template('/profile')
+        else:
+            flash('Please login!')
+            msg = "Please login"
+            flash(msg)
+            # return redirect('/login')
+    except Exception as e:
+        msg = f"Error. Tried adding {vaccine_id} to db failed: \n {e}."
+        flash(msg)
+        return msg 
+
+        
+    return msg 
 
 
-#====================== Symptom's Tracker =====================#
-@app.route('/symptom-tracker')
+
+#====================== Symptom's =====================#
+@app.route('/symptoms')
 def symptom_tracker():
+    symptoms = crud.get_symptoms()
+
+    
+
+    return render_template('symptoms.html', symptoms=symptoms)
+
+@app.route('/add_symptoms', methods=['GET', 'POST'])
+def add_symptoms():
 
 
-    return render_template('symptom-tracker.html')
+    if 'user_id' in session:
+        user_id = session['user_id']
+        msg = "User logged in"
+        today = datetime.datetime.now()
+        user_symptoms = crud.get_symptom_tracker_user_id_symptoms(user_id)
+        
+        symptom_count = 0
+        for symptom in user_symptoms:
+            if datetime.datetime.date(today) == datetime.datetime.date(symptom.symptom_date):
+                symptom_count += 1
+        
+        if symptom_count > 3:
+            flash("Please visit your local doctor for a checkup.")
 
-#====================== Profile =====================#
-@app.route('/profile')
-@login_required
-def profile():
-    """Display all saved locations and symptom's Tracker"""
+        symptoms = request.form.items()
+        
+        added_symptoms=[]
+
+        if symptoms:
+            for k,v in symptoms:
+                try:
+                    tracker = crud.create_symptom_tracker(user_id, k)
+                    added_symptoms.append(v);
+                except:
+                    pass 
+            
+            msg = f"The following symptoms were added to profile: {added_symptoms}"
+            return msg
+        
+        
+        
+        
 
 
+    else:
+        flash('Please login!')
+        msg = "Please login"
+        flash(msg) 
 
-    return render_template('profile.html')
-
-
+    return msg
 
 if __name__ == '__main__':
     connect_to_db(app)
-    app.run(debug=True, port="8080")
+    app.run(debug=True, port="8888")
 
