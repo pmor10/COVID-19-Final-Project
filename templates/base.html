@@ -18,10 +18,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Covid-19 California Tracker</a>
+            <a class="navbar-brand" href="/">
+                <img src="/static/img/covid-19-3.png" width="50" height="50" class="d-inline-block align-top" alt="">Covid-19 California Tracker
+            </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
                 <li><a href="/testing">Testing Location</a></li>
                 <li><a href="/vaccine">Vaccine Location</a></li>
                 <li><a href="/symptoms">symptoms Tracker</a></li>
@@ -30,8 +33,15 @@
 
                 <li><a href="/login">Login</a></li>
                 {% else %}
-                <li><a href= "/user_profile">Profile</a></li>
-                <li><a href= "/logout">Log Out</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        User Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/user_profile">Profile</a>
+                            <a class="dropdown-item" href="/logout">Log Out</a>
+                        </div>
+                    </li>
                 {% endif %}
             </ul>
         </div><!--/.nav-collapse -->

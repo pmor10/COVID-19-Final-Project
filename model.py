@@ -8,6 +8,20 @@ from flask_login import UserMixin
 
 db = SQLAlchemy()
 
+class Covid(db.Model):
+    """Covid Cases Data"""
+
+    __tablename__ = 'covid_cases'
+
+    date = db.Column(db.String(10), primary_key=True)
+    death = db.Column(db.DECIMAL(22,7))
+    positive = db.Column(db.DECIMAL(22,7))
+    totalTestResults = db.Column(db.DECIMAL(22,7))
+    hospitalizedCurrently = db.Column(db.DECIMAL(22,7))
+
+    def __repr__(self):
+        return f'<Covid date={self.date} death={self.death} positive={self.positive} total_test_results={self.totalTestResults} hospitalized_currently={self.hospitalizedCurrently}>'
+
 class User(UserMixin, db.Model):
     """A user."""
     

@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Symptom, SymptomTracker, TestingLocation, VaccineLocation, SavedTestingLocation, SavedVaccineLocation, connect_to_db
+from model import db, User, Symptom, SymptomTracker, TestingLocation, VaccineLocation, SavedTestingLocation, SavedVaccineLocation, Covid, connect_to_db
 from datetime import datetime
 
 
@@ -184,7 +184,9 @@ def check_vaccine_saved_location_in_favorites(user_id, vaccine_id):
 def del_vaccine_saved_locations(user_id, vaccine_id):
     return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).delete()
 
-
+def get_current_covid_data():
+    covid = Covid.query.order_by(Covid.date.desc()).limit(1).first()
+    return covid
 
 if __name__ == '__main__':
     from server import app

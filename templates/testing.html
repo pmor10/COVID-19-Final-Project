@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %}Testing Locations{% endblock %}
-
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/css/style.css">
+{% endblock %}
 {% block content %}
 <div class="conainter-fluid">
     <div id="testingsMap"></div>
@@ -43,8 +46,10 @@
             </form>
         </div>
         <div id="test_info"></div>
+        <div id="map"></div>
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHuMjFgkNGhtFTSp5nDN_ztfvu2bcZHv8&callback=initMap&libraries=&v=weekly" async></script>
     <script src="/static/js/testing.js"></script>
 {% endblock %}

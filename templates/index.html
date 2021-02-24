@@ -8,6 +8,21 @@
     </style>
 {% endblock %}
 
-{% block content %}    
-    <h1>Index</h1>
+{% block content %}  
+<div class="main-container landing-heading">
+    <div class="row-container">
+        <h1 class="container-heading">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <span class="text-muted">It’ll blow your mind.</span></h2>
+         <p class="container-content">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+    </div>
+</div>
+<div class="main-container">
+    <div class="row-container second">
+        <h1 class="container-content second">Updated for {{ now }}</h2>
+         <p class="container-content second">As of {{ month }}, California has {{ positive }} confirmed cases of COVID-19, resulting in {{ death }} deaths.</p>
+    </div>
+    <div class="cases-row-container">
+    </div>
+
+    <p>All-time series data is by reported date (the date information was reported to the California Department of Public Health)</p>
+</div>
 {% endblock %}

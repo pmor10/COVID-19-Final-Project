@@ -20,10 +20,19 @@ bootstrap = Bootstrap(app)
 def index():
     """Display Landing Page"""
 
-    return render_template('index.html')
+    now = datetime.datetime.now().strftime('%B %d, %Y')
+    month = datetime.datetime.now().strftime('%B, %d')
+
+    covid_cases = crud.get_current_covid_data()
+    
+    death = "{:,.0f}".format(covid_cases.death)
+
+    positive = "{:,.0f}".format(covid_cases.positive)
+
+    return render_template('index.html', now=now,  month=month, death=death, positive=positive)
 
 
-#====================== Signup =====================#
+#======================= Signup =====================#
 @app.route('/signup', methods=['GET'])
 def display_signup_form():
     """ Display sign Up page. """
@@ -56,25 +65,12 @@ def signup():
     return redirect('/')
 
 
-# @app.route('/validate_signup', methods=['GET'])
-# def user_exists():
-#     """ Determines if username given already exists in the database. """
-
-#     if 'username' not in request.args:
-#         return jsonify({'username_found': False})
-
-#     username = request.args.get('username')
-#     if crud.get_user_by_username(username) is not None:
-#         return jsonify({'username_found': True})
-#     return jsonify({'username_found': False})
-
 #====================== Login =====================#
 @app.route('/login', methods=['GET'])
 def display_login_form():
     """ Display log in page. """
 
     return render_template('login.html')
-
 
 
 @app.route('/login', methods=['POST'])
@@ -113,21 +109,6 @@ def validate_login_credentials():
     return jsonify(result)
 
 
-@app.route('/user_profile')
-def display_user_profile():
-    """Display user profile page"""
-
-    if 'user_id' in session:
-
-        user_id = session.get('user_id', None)
-        user = crud.get_user_by_id(user_id)
-
-        return render_template('user_profile.html', user=user)
-
-    flash('Sign Up or Log In in order to see your user profile.')
-    return redirect('/')
-
-
 #====================== Logout =====================#
 @app.route('/logout')
 def logout():
@@ -140,7 +121,61 @@ def logout():
     return redirect('/')
     # return jsonify('logged out')
 
-#====================== User Profile =====================#
+#=================== User Profile ====================#
+@app.route('/user_profile')
+def display_user_profile():
+    """Display user profile page"""
+
+    if 'user_id' in session:
+
+        user_id = session.get('user_id', None)
+        user = crud.get_user_by_id(user_id)
+        
+
+        def show_favorites(func1, func2, **kwargs):
+            
+            favorites = func1(kwargs['user_id'])
+            dataset = [] 
+
+            for fav in favorites: 
+                row = func2(getattr(fav, kwargs.get('table_id')))
+
+                dataset.append(row)
+
+            return format_data(d=dataset, key=kwargs.get('table_id'))
+
+
+        vac_data = show_favorites( crud.get_vaccine_saved_locations, 
+                            crud.get_vaccine_location_by_vaccine_id,
+                            user_id=user_id, 
+                            table_id='vaccine_id'
+                            )
+        
+        test_data = show_favorites(crud.get_testing_saved_locations, 
+                                   crud.get_testing_location_by_test_id,
+                                   user_id=user_id, 
+                                   table_id='test_id'
+                                    )
+
+
+        symptom_data = show_favorites(crud.get_symptom_tracker_user_id_symptoms,
+                                      crud.get_symptom_by_id,
+                                      user_id=user_id, 
+                                      table_id='symptom_id'
+                                      ) 
+
+        data = {
+                'vac_data': vac_data, 
+                'test_data': test_data, 
+                'symptom_data': symptom_data
+                }
+
+        return render_template('user_profile.html', user=user, data=data)
+
+    flash('Sign Up or Log In in order to see your user profile.')
+    return redirect('/')
+
+
 @app.route('/user_profile', methods=['POST'])
 def edit_user_profile():
     """Save any changes the user made to their profile"""
@@ -179,7 +214,7 @@ def format_data(d, key):
     """
     # Checks to see if the key passed in matches the primary key from the
     # VaccineLocation or TestingLocation model.
-    assert key in ['test_id', 'vaccine_id', 'symptom_id'], "Please use the correct attribute."
+    # assert key in ['test_id', 'vaccine_id', 'symptom_id'], "Please use the correct attribute."
 
     # This will hold our data from the crud query.
     data = {}
@@ -279,13 +314,6 @@ def add_testing_site():
         
     return msg 
     
-
-
-
-
-
-
-
 #====================== Vaccine =====================#
 @app.route('/vaccine')
 def search_vaccine():
@@ -308,6 +336,7 @@ def search_vaccine():
 @app.route('/add_vaccine_site', methods=['POST'])
 def add_vaccine_site():
     """Add vaccine location to the database"""
+
     vaccine_id = request.form.get("vaccine_id")
     favorite = { 
                     'status': None,
@@ -345,7 +374,6 @@ def add_vaccine_site():
 
         
     return msg 
-
 
 
 #====================== Symptom's =====================#
@@ -389,11 +417,6 @@ def add_symptoms():
             
             msg = f"The following symptoms were added to profile: {added_symptoms}"
             return msg
-        
-        
-        
-        
-
 
     else:
         flash('Please login!')
@@ -401,6 +424,7 @@ def add_symptoms():
         flash(msg) 
 
     return msg
+
 
 if __name__ == '__main__':
     connect_to_db(app)

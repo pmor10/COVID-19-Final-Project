@@ -8,42 +8,21 @@ Profile
 
 
 <div class="testing-profile-info">
-  {% for favorite in show_favorites %}
+  {% for val in data['vac_data'].values() %}
   
   <ul>
-    {% for site in favorite.values() %}
-      <li>{{site}}</li>
-      <li>{{site['address']}}</li>
-      {% endfor %}
+      <li>{{ val['name'] + ' ' + val['address'] }}</li>
   </ul>
-
   {% endfor %}
+  
 </div>
 
 <div class="vaccine-profile-info">
-  {% for favorite in vac_favorites %}
-  
-  <ul>
-    {% for site in favorite.values() %}
-      <li>{{site}}</li>
-      <li>{{site['address']}}</li>
-      {% endfor %}
-  </ul>
 
-  {% endfor %}
 </div>
 
 <div class="symptoms-profile-info">
-  {% for sympt in show_symptoms %}
-  
-  <ul>
-    {% for s in sympt.values() %}
-      <li>{{s}}</li>
-      <li>{{s['symptom_name']}}</li>
-      {% endfor %}
-  </ul>
 
-  {% endfor %}
 </div>
 
 {% endblock %}

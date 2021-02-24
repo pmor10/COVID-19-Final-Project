@@ -1,18 +1,26 @@
 import pandas as pd
-import json
 import numpy as np
 import requests
-
-from sqlalchemy import engine
 from setting import DB_INFO
+from sqlalchemy.engine import create_engine
+from io import StringIO
 
-# Pull the json from here
-url = 'https://covid-api.mmediagroup.fr/v1/cases'
+url = 'https://covidtracking.com/data/download/california-history.csv'
 
 # Get the json data
-r = requests.get(url).json()
+r = requests.get(url)
 
-states = r['US'].keys()
+data = StringIO()
 
-for k,v in r['US']['California'].items():
-    print(k, v)
+data.write(r.content.decode())
+
+data.seek(0)
+
+cur = create_engine(DB_INFO)
+
+df = pd.read_csv (data)
+
+df2 = df[['date', 'death', 'positive', 'totalTestResults', 'hospitalizedCurrently']].fillna(0)
+
+df2.to_sql('covid_cases', con=cur, schema='public', index=False, if_exists='replace')
+
