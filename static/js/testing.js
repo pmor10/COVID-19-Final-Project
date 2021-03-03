@@ -15,7 +15,10 @@ $("#testingsResults :button").on('click', (evt) => {
             
         } else if (res['status']=='added') {
             favorite.text("Location Saved"); 
-        } 
+        } else {
+
+            window.location.reload();
+        }
     });
   });
 

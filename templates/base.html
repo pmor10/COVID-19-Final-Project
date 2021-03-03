@@ -18,9 +18,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav  mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home</a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="/vaccine">Vaccine Location</a>
             </li>
@@ -52,26 +49,15 @@
       </nav>
     {% endblock%}
 
-
     {% block content %}{% endblock %}
+
     {% block footer %}
-      <footer class="footer mt-auto py-3 bg-light">
+      <footer class="footer py-3 bg-light">
       <div class="container">
         <p class="float-end"><a href="#">Back to top</a></p>
         <p>&copy; {{ year }} Paresa Morton &middot; <a href="#">Privacy&Terms</a></p>
       </div>
       </footer>
-    {% endblock %}
-    {% block flash_message%}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-            {% for message in messages %}
-                 <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
     {% endblock %}
     <!-- JavaScript Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

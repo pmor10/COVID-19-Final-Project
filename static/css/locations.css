@@ -13,7 +13,7 @@
     margin: auto;
 }
 
-.vaccine-search{
+.btn-button{
     width: 200px;
     color: #1c516c;
     background-color: #ebac00;
@@ -21,10 +21,27 @@
     font-weight: bold;
 }
 
-.vaccine-search:hover {
+.btn-button:hover {
     background-color: #1c516c;
     border-color: #1c516c;
     color: #ebac00;
+}
+
+.location-details {
+    list-style-type: none;
+}
+
+.facility-name {
+    font-weight: bold;
+}
+
+.btn-width-auto {
+    width: auto;
+}
+
+
+.map {
+    padding: 0 !important;
 }
 /*
  * Extra utilities

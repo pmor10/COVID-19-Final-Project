@@ -28,6 +28,11 @@ df['State'] = 'CA'
 use_cols = ['Address', 'Latitude', 'Longitude', 'Location Type', 'Name', 'State', 'Zip Code']
 df = df[use_cols] 
 
+df['Name'] = df['Name'].str.split('(', expand=True)[0].str.strip()
+df['Name'] = df['Name'].str.split('#', expand=True)[0].str.strip()
+df['Name'] = df['Name'].str.split('(at){1}', expand=True)[0].str.strip()
+df['Name'] = df['Name'].str.rstrip('012345679').str.strip().str.title()
+
 # Creating database connection
 con = engine.create_engine(DB_INFO)
 

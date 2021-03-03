@@ -308,16 +308,13 @@ def add_testing_site():
 
 
         else:
-            print('*'*500, 'entered flash msg')
-            flash('Please login!')
-            msg = "Please login"
+            msg = "Please login to save a location!"
             flash(msg)
         return render_template('testing.html', data=data, user_id=user_id)
 
 
     except Exception as e:
         msg = f"Error. Tried adding {test_id} to db failed: \n {e}."
-        flash(msg)
         return msg 
 
         
@@ -373,13 +370,11 @@ def add_vaccine_site():
 
         else:
             
-            flash('Please login!')
-            msg = "Please login"
+            msg = "Please login to save a location!"
             flash(msg)
             # return redirect('/login')
     except Exception as e:
         msg = f"Error. Tried adding {vaccine_id} to db failed: \n {e}."
-        flash(msg)
         return msg 
 
         

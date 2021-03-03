@@ -1,3 +1,8 @@
+.flashes {
+    list-style-type: none;
+    
+}
+
 .container {
     padding: 65px 0;
 }
@@ -88,7 +93,11 @@ p .btn-button:hover {
 }
 
 .tableauPlaceholder {
-    padding: 65px 0;
+    padding: 65px;
+}
+
+.footer {
+    margin-top: 65px;
 }
 
 .footer .container {
@@ -101,10 +110,8 @@ p .btn-button:hover {
 
 /* Set the size of the div element that contains the map */
 #map {
-    height: 400px;
-    /* The height is 400 pixels */
+    height: 100%;
     width: 100%;
-    /* The width is the width of the web page */
-  }
+}
 
 
