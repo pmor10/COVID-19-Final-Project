@@ -175,10 +175,26 @@ def display_user_profile():
                 'symptom_data': symptom_data
                 }
 
-        return render_template('user_profile.html', user=user, data=data)
+        return render_template('user_profile.html', user=user, data=data, enumerate=enumerate )
 
     flash('Sign Up or Log In in order to see your user profile.')
     return redirect('/')
+
+
+@app.route('/delete_vaccine', methods=['POST'])
+def delete_vaccine_loc():
+    """ Delete vaccine location from the database """
+
+    user_id = session.get('user_id', None)
+
+    vaccine_id = request.form.get("vaccine_id")
+
+    delete_vaccine = crud.del_vaccine_saved_locations(user_id, vaccine_id)
+
+    flash("Location removed!")
+
+    return "test"
+
 
 
 @app.route('/user_profile', methods=['POST'])
@@ -405,7 +421,7 @@ def add_symptoms():
             if datetime.datetime.date(today) == datetime.datetime.date(symptom.symptom_date):
                 symptom_count += 1
         
-        if symptom_count > 3:
+        if symptom_count >= 3:
             flash("Please visit your local doctor for a checkup.")
 
         symptoms = request.form.items()
@@ -421,7 +437,7 @@ def add_symptoms():
                     pass 
             
             msg = f"The following symptoms were added to profile: {added_symptoms}"
-            return msg
+            flash (msg)
 
     else:
         

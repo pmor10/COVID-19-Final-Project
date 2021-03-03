@@ -44,6 +44,17 @@ Profile
       </div>
 
       <h2>Vaccine Locations</h2>
+      <div class="error">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flashes alert alert-primary text-center" role="alert"">
+                {% for message in messages %}
+                     <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+        </div>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
@@ -51,25 +62,23 @@ Profile
               <th>#</th>
               <th>Name</th>
               <th>Address</th>
-              <th>Date</th>
               <th>Remove</th>
             </tr>
           </thead>
           <tbody>
+            {% for i, val in enumerate(data['vac_data'].items(), 1) %}
             <tr>
-              <td>1</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
+              <td>{{ i }}</td>
+              <td>{{  val[1]['name'] }}</td>
+              <td>{{ val[1]['address'] }}</td>
+              <td>
+                <form id="removeVaccine" action='/delete_vaccine' method="post">
+                  <input id='btnRemove' type="button" value="{{ val[0] }}"/><i class="bi bi-x-circle"></i>
+                  <!-- <button id="del_button" type="button" class="del_vaccine_location btn btn-button btn-width-auto" value="{{ val[0] }}" ><i class="bi bi-x-circle"></i></button> -->
+                </form>
+              </td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -77,16 +86,6 @@ Profile
   </div>
 </div>
 
-
-<div class="testing-profile-info">
-  {% for val in data['vac_data'].values() %}
-  
-  <ul>
-      <li>{{ val['name'] + ' ' + val['address'] }}</li>
-  </ul>
-  {% endfor %}
-  
-</div>
 
 <div class="vaccine-profile-info">
 
@@ -98,6 +97,8 @@ Profile
 
 {% endblock %}
 
-
+{% block scripts %}
+    <script src="/static/js/user_profile.js"></script>
+{% endblock %}
 
 
