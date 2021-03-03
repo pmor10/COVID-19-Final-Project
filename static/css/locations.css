@@ -1,0 +1,40 @@
+.site-header {
+    padding: 65px 0;
+    background-color: #1c516c;
+    color: #fff;
+}
+
+.site-search {
+    display: flex;
+    padding: 65px 0;
+}
+
+.search-row {
+    margin: auto;
+}
+
+.vaccine-search{
+    width: 200px;
+    color: #1c516c;
+    background-color: #ebac00;
+    border-color: #ebac00;
+    font-weight: bold;
+}
+
+.vaccine-search:hover {
+    background-color: #1c516c;
+    border-color: #1c516c;
+    color: #ebac00;
+}
+/*
+ * Extra utilities
+ */
+
+.flex-equal > * {
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    flex: 1;
+  }
+}

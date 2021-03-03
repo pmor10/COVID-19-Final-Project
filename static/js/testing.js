@@ -13,13 +13,13 @@ $("#testingsResults :button").on('click', (evt) => {
         if (res['status']=='already_favorited') {
             $("#test_info").html('Location exists.');
             
-        } else {
+        } else if (res['status']=='added') {
             favorite.text("Location Saved"); 
-        }
-    
+        } 
     });
   });
 
+  
 
 
   // Initialize and add the map

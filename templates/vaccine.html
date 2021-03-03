@@ -2,31 +2,29 @@
 
 {% block title %}vaccine Locations{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/css/locations.css">
+{% endblock %}
+
 {% block content %}
-<div class="conainter-fluid">
-    <div id="vaccinesMap"></div>
-</div>
-<div class="container mt-5">
-    <div class="row">
+<div class="site-header text-center">
+    <div class="heading-row">
         <h1 id="vaccinesTitle">Vaccine Locations</h1>
-    </div>
-    <div class="row">
-        <p class="justifyText">Search for vaccine locations by zipcode.</p>
-        <form class="form-inline" action="/vaccine" method="GET" id="vaccineSearchForm">
-            <div class="form-group">
-                <label for="zip_code">Search: </label>
-                    <input class="form-control mx-sm-3" type="text" name="zip_code" id="zip_code" required>
-                <button type="submit" id="vaccinesearchButton" class="btn btn-primary">
-                    <i class="glyphicon glyphicon-search"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="row">
-        <p class="alert alert-primary" id="vaccinesErrorMessage"><small><a href="/signup">Sign Up</a> or <a href="/login">Log In</a> to enable favoriting vaccines.</small></p>
     </div>
 </div>
 
+<div class="site-search">
+    <div class="search-row">
+        <p class="locations-p text-center">Search for vaccine locations by zipcode.</p>
+        <form class="d-flex" action="/vaccine" method="GET" id="vaccineSearchForm">
+            <input class="form-control me-2" type="search" placeholder="Search Zipcode" aria-label="Search" name="zip_code" id="zip_code" required>
+            <button id="vaccinesearchButton" class="vaccine-search btn btn-button" type="submit">Find Vaccine</button>
+        </form>
+    </div>
+</div>
+<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 overflow-hidden">
         <div id="vaccinesResults">
             <form id="vaccine_content" action='/add_vaccine_site' method="post">
                 {% for vaccine_id, v in data.items() %}
@@ -40,7 +38,13 @@
                 {% endfor %}
             </form>
         </div>
-        <div id="vaccine_info"></div>
+    </div>
+
+
+    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <h1>Map</h1>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

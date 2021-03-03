@@ -7,13 +7,11 @@ import datetime
 
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
-from flask_bootstrap import Bootstrap
 
 SALT_SIZE = 16
 
 app = Flask(__name__)
 app.secret_key = "dev"
-bootstrap = Bootstrap(app)
 
 
 @app.route('/')
@@ -21,7 +19,10 @@ def index():
     """Display Landing Page"""
 
     now = datetime.datetime.now().strftime('%B %d, %Y')
+    year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%B, %d')
+
+
 
     covid_cases = crud.get_current_covid_data()
     
@@ -29,7 +30,11 @@ def index():
 
     positive = "{:,.0f}".format(covid_cases.positive)
 
-    return render_template('index.html', now=now,  month=month, death=death, positive=positive)
+    hospitalized = "{:,.0f}".format(covid_cases.hospitalizedCurrently)
+
+    totalTestResults = "{:,.0f}".format(covid_cases.totalTestResults)
+
+    return render_template('index.html', now=now,  month=month, year=year, death=death, positive=positive, hospitalizedCurrently=hospitalized, totalTestResults=totalTestResults)
 
 
 #======================= Signup =====================#
@@ -267,6 +272,7 @@ def search_testing():
     if 'user_id' in session:
         user_id = session['user_id']
     else:
+        
         user_id = None
         
     return render_template('testing.html', data=data, user_id=user_id)
@@ -302,10 +308,13 @@ def add_testing_site():
 
 
         else:
+            print('*'*500, 'entered flash msg')
             flash('Please login!')
             msg = "Please login"
             flash(msg)
-            # return redirect('/login')
+        return render_template('testing.html', data=data, user_id=user_id)
+
+
     except Exception as e:
         msg = f"Error. Tried adding {test_id} to db failed: \n {e}."
         flash(msg)
@@ -363,6 +372,7 @@ def add_vaccine_site():
 
 
         else:
+            
             flash('Please login!')
             msg = "Please login"
             flash(msg)
@@ -411,7 +421,7 @@ def add_symptoms():
             for k,v in symptoms:
                 try:
                     tracker = crud.create_symptom_tracker(user_id, k)
-                    added_symptoms.append(v);
+                    added_symptoms.append(v)
                 except:
                     pass 
             
@@ -419,6 +429,7 @@ def add_symptoms():
             return msg
 
     else:
+        
         flash('Please login!')
         msg = "Please login"
         flash(msg) 
@@ -428,5 +439,5 @@ def add_symptoms():
 
 if __name__ == '__main__':
     connect_to_db(app)
-    app.run(debug=True, port="8888")
+    app.run(debug=True, port="5000")
 

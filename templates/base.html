@@ -11,13 +11,13 @@
 </head>
 <body>
     {% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Covid-19 CA Tracker</a>
+    <nav class="navbar navbar-expand-xl navbar-light shadow-sm px-5 py-3 bg-white rounded">
+        <a class="navbar-brand" href="/"><img src="/static/img/covid-19-3.png" width="30" height="30" alt="covid-19 img"> Covid-19 Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav  mr-auto">
             <li class="nav-item active">
               <a class="nav-link" href="/">Home</a>
             </li>
@@ -30,20 +30,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="/symptoms">Symptoms Tracker</a>
               </li>
+          </ul>
+           <ul class="navbar-nav ms-auto">
               {% if 'user_id' not in session %}
-
               <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/login"><i class="bi bi-person-fill"></i> Login</a>
               </li>
               {% else %}
-
+                <!-- Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Account</a>
-
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="/user_profile">Profile</a>
                         <a class="dropdown-item" href="#">Edit Profile</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
+                        <a class="dropdown-item" href="/logout"><i class="bi bi-person-dash-fill"></i>Logout</a>
                     </div>
                 </li>
               {% endif %}
@@ -52,6 +52,16 @@
       </nav>
     {% endblock%}
 
+
+    {% block content %}{% endblock %}
+    {% block footer %}
+      <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <p class="float-end"><a href="#">Back to top</a></p>
+        <p>&copy; {{ year }} Paresa Morton &middot; <a href="#">Privacy&Terms</a></p>
+      </div>
+      </footer>
+    {% endblock %}
     {% block flash_message%}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -63,8 +73,6 @@
         {% endif %}
     {% endwith %}
     {% endblock %}
-
-    {% block content %}{% endblock %}
     <!-- JavaScript Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
