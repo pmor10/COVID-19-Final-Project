@@ -11,15 +11,18 @@ os.system('sudo -u postgres createdb postgres')
 model.connect_to_db(server.app)
 model.db.create_all()
 
-symptoms = ['chills', 
-            'headache', 
-            'congestion', 
-            'nausea', 
-            'fatigue', 
-            'fever', 
-            'shortness_breath',
-            'cough', 
-            'sore_throat']
+symptoms = ['Chills', 
+            'Congestion or runny nose', 
+            'Cough', 
+            'Diarrhea', 
+            'Fatigue', 
+            'Fever', 
+            'Headache', 
+            'Muscle or body aches',
+            'Nausea or vomiting',
+            'New loss of taste or smell',
+            'Shortness of breath or difficulty breathing',
+            'Sore throat']
 
 for s in symptoms:
     crud.create_symptom(s)

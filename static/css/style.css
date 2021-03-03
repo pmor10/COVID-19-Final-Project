@@ -1,3 +1,9 @@
+.site-header {
+    padding: 65px 0;
+    background-color: #1c516c;
+    color: #fff;
+}
+
 .flashes {
     list-style-type: none;
     

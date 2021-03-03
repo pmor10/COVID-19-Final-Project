@@ -386,9 +386,9 @@ def add_vaccine_site():
 def symptom_tracker():
     symptoms = crud.get_symptoms()
 
-    
+    two_col_symptoms = tuple(zip(symptoms[1::2], symptoms[::2]))
 
-    return render_template('symptoms.html', symptoms=symptoms)
+    return render_template('symptoms.html', symptoms=symptoms, two_col_symptoms=two_col_symptoms)
 
 @app.route('/add_symptoms', methods=['GET', 'POST'])
 def add_symptoms():
@@ -425,7 +425,6 @@ def add_symptoms():
 
     else:
         
-        flash('Please login!')
         msg = "Please login"
         flash(msg) 
 

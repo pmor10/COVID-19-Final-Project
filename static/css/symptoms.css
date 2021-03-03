@@ -1,0 +1,43 @@
+.content-row {
+    padding: 65px 0;
+}
+
+.symptom_container {
+    background-color: #f7f7f9;
+    border: 1px solid #bbb;
+    overflow: hidden;
+    padding: 85px 0;
+}
+
+.symptoms-list {
+    list-style-type: none;
+    margin: auto;
+
+}
+
+.symptoms-list > li {
+    padding-bottom: 30px;
+}
+
+.form-check-input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+}
+
+.btn-button {
+    color: #1c516c;
+    background-color: #ebac00;
+    border-color: #ebac00;
+    font-weight: bold;
+}
+
+.btn-button:hover {
+    background-color: #1c516c;
+    border-color: #1c516c;
+    color: #ebac00;
+}
+
+.btn-container {
+    padding-bottom: 0 !important;
+}

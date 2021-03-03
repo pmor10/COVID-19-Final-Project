@@ -1,21 +1,71 @@
 {% extends "base.html" %}
 
-
+{% block title %}Symptoms Tracker{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/css/symptoms.css">
+{% endblock %}
 {% block content %}
 
-
-<form id="symptom_content" action="/add_symptoms" method="post">
-    {% for symptom in symptoms %}
-
-    <input type="checkbox" id={{symptom.symptom_id}} class="get_value" value={{symptom.symptom_name}} name={{symptom.symptom_id}}>
-
-    <label for={{symptom.symptom_id}}>{{symptom.symptom_name}}</label><br>
-    
-    {% endfor %}
-    <button id="add_button" class="save_symptom"  >Add Symptoms</button>
+<div class="site-header text-center">
+    <div class="heading-row">
+        <h1 id="symptomsTitle">Symptoms Tracker</h1>
+    </div>
+</div>
+<div class="site-search">
+  <div class="content-row">
+      <p class="symptoms-p text-center">Please check the box(s) to track your symptom(s)</p>
+  </div>
+</div>
+{% block flash_message%}
+<div class="error">
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes alert alert-primary text-center" role="alert"">
+        {% for message in messages %}
+             <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+</div>
+{% endblock %}
+<div class="formgroup-container">
+  <form id="symptom_content" action="/add_symptoms" method="post">
+      <div class="symptom_container container d-flex flex-wrap col-md-8 col-xs-24">
+          <ul class="symptoms-list">
+          {% for symptom_x, symptom_y in two_col_symptoms %}
+          <li class="symptom-element">
+            <input type="checkbox" id={{symptom_x.symptom_id}} class="get_value form-check-input" value={{symptom_x.symptom_name}} name={{symptom_x.symptom_id}}>
+            <label for={{symptom_x.symptom_id}}>{{symptom_x.symptom_name}}</label><br>
+          </li>
+          {% endfor %}
+          </ul>
+          <ul class="symptoms-list">
+            {% for symptom_x, symptom_y in two_col_symptoms %}
+            <li class="symptom-element">
+              <input type="checkbox" id={{symptom_y.symptom_id}} class="get_value form-check-input" value={{symptom_y.symptom_name}} name={{symptom_y.symptom_id}}>
+              <label for={{symptom_y.symptom_id}}>{{symptom_y.symptom_name}}</label><br>
+            </li>
+            {% endfor %}
+            </ul>
+      </div>
+      <div class="btn-container container d-flex justify-content-center">
+        <button id="add_button" class="save_symptom btn btn-button">Add Symptoms</button>
+      </div>
   </form>
-<h4 id="result"></h4>
-  {% endblock %}
+  <h4 id="result"></h4>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
 
   {% block scripts %}
     <script src="/static/js/symptoms.js"></script>
