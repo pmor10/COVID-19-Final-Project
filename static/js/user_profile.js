@@ -1,23 +1,14 @@
 "use strict";
+console.log("This is running!!!!")
 
-
-$('#removeVaccine :button').on('click', (evt) => {
-    let favorite = $(evt.target);
+$('#btnRemove').on('click', (evt) => {
     evt.preventDefault();
-  
+    let favorite = $(evt.target);
+    console.log(favorite)
     let data = {
          'vaccine_id': favorite.val()
       };
     $.post('/delete_vaccine', data, (res) => {
-            $("#btnRemove").remove();
-            window.location.reload();
-    
+       window.location.reload(true)
     });
   });
-
-
-function removeVaccine() {
-    let elem = document.getElementById('removeVaccine');
-    elem.parentNode.removeChild(elem);
-    return false;
-}

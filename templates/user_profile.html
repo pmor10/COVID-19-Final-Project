@@ -43,18 +43,21 @@ Profile
         </div> -->
       </div>
 
-      <h2>Vaccine Locations</h2>
-      <div class="error">
+      {% block flash_message %}
+        <div class="error">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul class="flashes alert alert-primary text-center" role="alert"">
                 {% for message in messages %}
-                     <li>{{ message }}</li>
+                    <li>{{ message }}</li>
                 {% endfor %}
             </ul>
             {% endif %}
         {% endwith %}
         </div>
+      {% endblock %}
+
+      <h2>Vaccine Locations</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
@@ -73,8 +76,7 @@ Profile
               <td>{{ val[1]['address'] }}</td>
               <td>
                 <form id="removeVaccine" action='/delete_vaccine' method="post">
-                  <input id='btnRemove' type="button" value="{{ val[0] }}"/><i class="bi bi-x-circle"></i>
-                  <!-- <button id="del_button" type="button" class="del_vaccine_location btn btn-button btn-width-auto" value="{{ val[0] }}" ><i class="bi bi-x-circle"></i></button> -->
+                  <button id="btnRemove" type="submit" class="del_vaccine_location btn btn-button btn-width-auto" value="{{ val[0] }}">X</button>
                 </form>
               </td>
             </tr>

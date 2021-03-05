@@ -173,21 +173,27 @@ def create_vaccine_saved_locations(user_id, vaccine_id):
 
 
 def get_vaccine_saved_locations(user_id):
-    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id).all()
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id == user_id).all()
 
 
 def check_vaccine_saved_location_in_favorites(user_id, vaccine_id):
 
-    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).first()    
+    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id == user_id, SavedVaccineLocation.vaccine_id == vaccine_id).first()
 
 
 def del_vaccine_saved_locations(user_id, vaccine_id):
-    return SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id==user_id, SavedVaccineLocation.vaccine_id==vaccine_id).delete()
+    
+    SavedVaccineLocation.query.filter(SavedVaccineLocation.user_id == user_id, SavedVaccineLocation.vaccine_id == vaccine_id).delete()
+
+    db.session.commit()
+
+    # return check_vaccine_saved_location_in_favorites(user_id, vaccine_id)
 
 
 def get_current_covid_data():
     covid = Covid.query.order_by(Covid.date.desc()).limit(1).first()
     return covid
+
 
 if __name__ == '__main__':
     from server import app

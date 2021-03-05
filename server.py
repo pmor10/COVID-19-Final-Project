@@ -22,19 +22,13 @@ def index():
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%B, %d')
 
-
-
     covid_cases = crud.get_current_covid_data()
-    
     death = "{:,.0f}".format(covid_cases.death)
-
     positive = "{:,.0f}".format(covid_cases.positive)
-
     hospitalized = "{:,.0f}".format(covid_cases.hospitalizedCurrently)
+    totaltestresults = "{:,.0f}".format(covid_cases.totalTestResults)
 
-    totalTestResults = "{:,.0f}".format(covid_cases.totalTestResults)
-
-    return render_template('index.html', now=now,  month=month, year=year, death=death, positive=positive, hospitalizedCurrently=hospitalized, totalTestResults=totalTestResults)
+    return render_template('index.html', now=now,  month=month, year=year, death=death, positive=positive, hospitalizedCurrently=hospitalized, totalTestResults=totaltestresults)
 
 
 #======================= Signup =====================#
@@ -49,7 +43,6 @@ def display_signup_form():
 def signup():
     """ Sign up new user and then redirect to homepage. """
 
- 
     email = request.form.get('email')
     username = request.form.get('username')
 
@@ -102,12 +95,11 @@ def validate_login_credentials():
 
     if password_db_hash == password_entered_hash:
         result['valid_login'] = True
-        # log user in by assing their id to the session
+        # log user in by assigning their id to the session
         session['user_id'] = user.user_id
 
         return redirect('/user_profile')
 
-        
     else:
         result['valid_login'] = False
 
@@ -119,12 +111,10 @@ def validate_login_credentials():
 def logout():
     """ Logout the current logged in user. """
     if 'user_id' in session:
-
-        flash(f'{session["user_id"]} successfully logged out.')
+        flash(f"{session['user_id']} successfully logged out.")
         del session['user_id']
 
     return redirect('/')
-    # return jsonify('logged out')
 
 #=================== User Profile ====================#
 @app.route('/user_profile')
@@ -132,10 +122,8 @@ def display_user_profile():
     """Display user profile page"""
 
     if 'user_id' in session:
-
         user_id = session.get('user_id', None)
         user = crud.get_user_by_id(user_id)
-        
 
         def show_favorites(func1, func2, **kwargs):
             
@@ -144,24 +132,21 @@ def display_user_profile():
 
             for fav in favorites: 
                 row = func2(getattr(fav, kwargs.get('table_id')))
-
                 dataset.append(row)
 
             return format_data(d=dataset, key=kwargs.get('table_id'))
 
-
-        vac_data = show_favorites( crud.get_vaccine_saved_locations, 
-                            crud.get_vaccine_location_by_vaccine_id,
-                            user_id=user_id, 
-                            table_id='vaccine_id'
-                            )
+        vac_data = show_favorites(crud.get_vaccine_saved_locations,
+                                  crud.get_vaccine_location_by_vaccine_id,
+                                  user_id=user_id,
+                                  table_id='vaccine_id'
+                                  )
         
         test_data = show_favorites(crud.get_testing_saved_locations, 
                                    crud.get_testing_location_by_test_id,
                                    user_id=user_id, 
                                    table_id='test_id'
                                     )
-
 
         symptom_data = show_favorites(crud.get_symptom_tracker_user_id_symptoms,
                                       crud.get_symptom_by_id,
@@ -186,35 +171,13 @@ def delete_vaccine_loc():
     """ Delete vaccine location from the database """
 
     user_id = session.get('user_id', None)
-
-    vaccine_id = request.form.get("vaccine_id")
-
-    delete_vaccine = crud.del_vaccine_saved_locations(user_id, vaccine_id)
+    vaccine_id = request.form.get('vaccine_id')
+    print('*'*10000, vaccine_id)
+    crud.del_vaccine_saved_locations(user_id, vaccine_id)
 
     flash("Location removed!")
 
-    return "test"
-
-
-
-@app.route('/user_profile', methods=['POST'])
-def edit_user_profile():
-    """Save any changes the user made to their profile"""
-
-    if 'user_id' in session:
-        user_id = session.get('user_id')
-        email = request.form.get('email')
-
-
-        flash('User profile saved.')
-        return redirect('/')
-
-    flash('Sign Up or Log In in order to see your user profile.')
-    return redirect('/')
-
-@app.route('/change_password', methods=['POST'])
-def change_password():
-    """ Changes user password and redirects to home. """
+    return jsonify("Success!")
 
 
 #====================== Getting data for testing and vaccine locations =====================#
@@ -241,7 +204,7 @@ def format_data(d, key):
     data = {}
 
     # row is the query object that is returned from crud.
-    # Remeber that d is the query results that come in as a list of query objects.
+    # d is the query results that come in as a list of query objects.
     for row in d:
         # r is a temporary variable that will hold the attributes for each test_id/vaccine_id
         # For example, r will store the {'address': '1725 S Bascom'} for each key value pair
@@ -298,10 +261,10 @@ def search_testing():
 @app.route('/add_testing_site', methods=['POST'])
 def add_testing_site():
     """Add testing location to the database"""
-    test_id = request.form.get("test_id")
+
+    test_id = request.form.get('test_id')
     favorite = { 
                     'status': None,
-
                 }
     try:
         if 'user_id' in session:
@@ -310,30 +273,27 @@ def add_testing_site():
             already_favorited = crud.check_testing_saved_location_in_favorites(user_id, test_id)
 
             if already_favorited:
-
                 favorite['status'] = 'already_favorited'
                 flash('Already saved to favorites.')
                 return favorite
+
             else:
                 favorite['status'] = 'added'
                 saved_location = crud.create_testing_saved_locations(user_id, test_id) 
                 location = crud.get_testing_location_by_test_id(test_id)
-                msg = f"Testing Location {location.alternate_name} saved to profile!"
-                flash(msg)
+                flash(f'Testing Location {location.alternate_name} saved to profile!')
                 return favorite 
 
 
         else:
-            msg = "Please login to save a location!"
-            flash(msg)
-        return render_template('testing.html', data=data, user_id=user_id)
+            flash('Please login to save a location!')
 
+        return render_template('testing.html', data=data, user_id=user_id)
 
     except Exception as e:
         msg = f"Error. Tried adding {test_id} to db failed: \n {e}."
         return msg 
 
-        
     return msg 
     
 #====================== Vaccine =====================#
@@ -345,14 +305,12 @@ def search_vaccine():
     vaccine_info = crud.get_vaccine_location_by_zipcode(zip_code)
     data = format_data(d=vaccine_info, key='vaccine_id')
 
-
     if 'user_id' in session:
         user_id = session['user_id']
     else:
         user_id = None
         
     return render_template('vaccine.html', data=data, user_id=user_id)
-
 
 
 @app.route('/add_vaccine_site', methods=['POST'])
@@ -362,40 +320,34 @@ def add_vaccine_site():
     vaccine_id = request.form.get("vaccine_id")
     favorite = { 
                     'status': None,
-
                 }
+
     try:
         if 'user_id' in session:
             user_id = session['user_id']
 
-            already_favorited = crud.check_testing_saved_location_in_favorites(user_id, vaccine_id)
-
+            already_favorited = crud.check_vaccine_saved_location_in_favorites(user_id, vaccine_id)
+            
             if already_favorited:
-
                 favorite['status'] = 'already_favorited'
                 flash('Already saved to favorites.')
-                return favorite
+                return jsonify(favorite)
             else:
                 favorite['status'] = 'added'
                 saved_location = crud.create_vaccine_saved_locations(user_id, vaccine_id) 
                 location = crud.get_vaccine_location_by_vaccine_id(vaccine_id)
-                msg = f"Vaccine Location {location.name} saved to profile!"
-                flash(msg)
-                return favorite 
+                
+                flash('Vaccine Location saved to profile!')
+                return jsonify(favorite) 
 
+        else:     
+            flash('Please login to save a location!')
 
-        else:
-            
-            msg = "Please login to save a location!"
-            flash(msg)
-            # return redirect('/login')
     except Exception as e:
-        msg = f"Error. Tried adding {vaccine_id} to db failed: \n {e}."
+        msg = f'Error. Tried adding {vaccine_id} to db failed: \n {e}.'
         return msg 
-
         
-    return msg 
-
+    return jsonify('Success!')
 
 #====================== Symptom's =====================#
 @app.route('/symptoms')
@@ -412,7 +364,7 @@ def add_symptoms():
 
     if 'user_id' in session:
         user_id = session['user_id']
-        msg = "User logged in"
+        flash("User logged in") 
         today = datetime.datetime.now()
         user_symptoms = crud.get_symptom_tracker_user_id_symptoms(user_id)
         
@@ -422,7 +374,7 @@ def add_symptoms():
                 symptom_count += 1
         
         if symptom_count >= 3:
-            flash("Please visit your local doctor for a checkup.")
+            flash('Please visit your local doctor for a checkup.')
 
         symptoms = request.form.items()
         
@@ -436,13 +388,10 @@ def add_symptoms():
                 except:
                     pass 
             
-            msg = f"The following symptoms were added to profile: {added_symptoms}"
-            flash (msg)
+            flash(f'The following symptoms were added to profile: {added_symptoms}')
 
     else:
-        
-        msg = "Please login"
-        flash(msg) 
+        flash('Please Login') 
 
     return msg
 
