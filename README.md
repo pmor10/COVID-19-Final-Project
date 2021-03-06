@@ -35,7 +35,6 @@
 
 ![california-covid-19-app](images/california-covid-19-app.png)
 
-      The purpose of this project is to provide a useful Covid-19 resource to find nearby testing and vaccine sites. The site also provides some descriptive statistics regarding total cases, mortalities and vaccinations to date. The user will also be able to track their symptoms over time using the site.
 
 
 
