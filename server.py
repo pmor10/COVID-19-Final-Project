@@ -364,7 +364,7 @@ def add_symptoms():
 
     if 'user_id' in session:
         user_id = session['user_id']
-        flash("User logged in") 
+        msg = "User logged in"
         today = datetime.datetime.now()
         user_symptoms = crud.get_symptom_tracker_user_id_symptoms(user_id)
         
@@ -374,7 +374,7 @@ def add_symptoms():
                 symptom_count += 1
         
         if symptom_count >= 3:
-            flash('Please visit your local doctor for a checkup.')
+            msg = 'Please visit your local doctor for a checkup.'
 
         symptoms = request.form.items()
         
@@ -388,12 +388,12 @@ def add_symptoms():
                 except:
                     pass 
             
-            flash(f'The following symptoms were added to profile: {added_symptoms}')
+            msg = f'The following symptoms were added to profile: {added_symptoms}'
 
     else:
-        flash('Please Login') 
+        msg = 'Please Login'
 
-    return msg
+    return flash(msg)
 
 
 if __name__ == '__main__':

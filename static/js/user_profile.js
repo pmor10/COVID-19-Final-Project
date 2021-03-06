@@ -9,6 +9,6 @@ $('#btnRemove').on('click', (evt) => {
          'vaccine_id': favorite.val()
       };
     $.post('/delete_vaccine', data, (res) => {
-       window.location.reload(true)
+       window.location.reload(true);
     });
   });

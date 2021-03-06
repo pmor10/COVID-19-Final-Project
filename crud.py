@@ -187,8 +187,6 @@ def del_vaccine_saved_locations(user_id, vaccine_id):
 
     db.session.commit()
 
-    # return check_vaccine_saved_location_in_favorites(user_id, vaccine_id)
-
 
 def get_current_covid_data():
     covid = Covid.query.order_by(Covid.date.desc()).limit(1).first()

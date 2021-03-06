@@ -2,24 +2,23 @@
 
 
 $('#vaccinesResults :button').on('click', (evt) => {
-  
+
     evt.preventDefault();
     let favorite = $(evt.target);
+
   
     let data = {
          'vaccine_id': favorite.val()
       };
     $.post('/add_vaccine_site', data, (res) => {
-  
 
         if (res['status']==='already_favorited') {
             favorite.text("Location exists");
-            // alert("Location already saved!") // does not show the message!!!!!!!!!
-        } 
-        else if (res['status']==='added') {
+            // alert("Location already saved!")
+        } else if (res['status']==='added') {
             favorite.text("Location Saved");
         }
-    
+        window.location.reload(true);
     });
   });
 

@@ -42,22 +42,20 @@ Profile
           </button>
         </div> -->
       </div>
-
-      {% block flash_message %}
-        <div class="error">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class="flashes alert alert-primary text-center" role="alert"">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
-        </div>
-      {% endblock %}
-
       <h2>Vaccine Locations</h2>
+        {% block flash_message %}
+        <div class="error">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class="flashes alert alert-primary text-center" role="alert">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        {% endblock %}
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
