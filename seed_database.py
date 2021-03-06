@@ -1,15 +1,14 @@
 import os
 from random import choice, randint
-
-import crud
-import model
-import server 
+from CovidTracker.app import app 
+from CovidTracker.connect import connect_to_db, db 
+from CovidTracker.crud.symptom import create_symptom, get_symptoms, del_symptom_tracker, get_symptom_tracker, get_symptom_by_id
 
 os.system('sudo -u postgres dropdb postgres')
 os.system('sudo -u postgres createdb postgres')
 
-model.connect_to_db(server.app)
-model.db.create_all()
+connect_to_db(app)
+db.create_all()
 
 symptoms = ['Chills', 
             'Congestion or runny nose', 
@@ -25,7 +24,7 @@ symptoms = ['Chills',
             'Sore throat']
 
 for s in symptoms:
-    crud.create_symptom(s)
+    create_symptom(s)
 
 
 # create 10 dummy users
@@ -42,24 +41,24 @@ for s in symptoms:
 
 
 
-print(crud.get_symptoms())
+print(get_symptoms())
 
 for user, symptom in [(1,1), (1,2), (1,3), (2,1), (2,4)]:
 
-    crud.create_symptom_tracker(user, symptom)
+    create_symptom_tracker(user, symptom)
 
-records = crud.get_symptom_tracker(1)
+records = get_symptom_tracker(1)
 
 for record in records:
     print(record.symptom.symptom_name, record.user.username)
 
-d = crud.del_symptom_tracker(1, 1)
+d = del_symptom_tracker(1, 1)
 
-records1 = crud.get_symptom_tracker(1)
+records1 = get_symptom_tracker(1)
 for record in records1:
     print(record.symptom.symptom_name, record.user.username)
 
-s1 = crud.get_symptom_by_id(1)
+s1 = get_symptom_by_id(1)
 print(s1)
 
 # u1 = crud.upd_symptom_by_id(1, 'Hairloss')

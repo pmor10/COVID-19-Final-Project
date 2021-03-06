@@ -7,6 +7,7 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+      The purpose of this project is to provide a useful Covid-19 resource to find nearby testing and vaccine sites. The site also provides some descriptive statistics regarding total cases, mortalities and vaccinations to date. The user will also be able to track their symptoms over time using the site.
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>

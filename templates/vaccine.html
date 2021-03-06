@@ -62,6 +62,10 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtmT9-GMRP4Aa7KYM6p6dDT_ieVdURI4Q&callback=initMap&libraries=&v=weekly" async></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiiu57hnOECo1FEQV1I4nTVR6qXus_LnI&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>    
     <script src="/static/js/vaccine.js"></script>
 {% endblock %}

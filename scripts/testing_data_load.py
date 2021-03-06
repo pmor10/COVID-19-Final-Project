@@ -4,7 +4,7 @@ import numpy as np
 import requests
 
 from sqlalchemy import engine
-from setting import DB_INFO
+from CovidTracker.config import DB_INFO
 
 # Pull the json from here
 url = 'https://covid-19-testing.github.io/locations/california/complete.json'

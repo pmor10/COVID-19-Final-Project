@@ -1,8 +1,7 @@
 """Models for Covid-19 California's Locations and Symptoms Tracker."""
 
-from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from setting import DB_INFO
+from CovidTracker.config import DB_INFO
 from flask_login import UserMixin
 
 
@@ -130,7 +129,7 @@ class VaccineLocation(db.Model):
 
 
     def __repr__(self):
-        return'<Vaccine Location name={self.name} Location address={self.address} state={self.state} zip_code={self.zip_code} vaccine_id={self.vaccine_id}>'
+        return'<Vaccine Location name={self.name} Location address={self.address} state={self.state} zip_code={self.zip_code} vaccine_id={self.vaccine_id} latitude={self.latitude}> longitude={self.longitude}'
 
 
 class SavedVaccineLocation(db.Model):
@@ -144,22 +143,3 @@ class SavedVaccineLocation(db.Model):
 
     def __repr__(self):
         return '<Saved vaccine_id={self.vaccine_id} user_id={self.user_id}>'
-
-
-def connect_to_db(flask_app, db_uri=DB_INFO, echo=True):
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    flask_app.config['SQLALCHEMY_ECHO'] = echo
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.app = flask_app
-    db.init_app(flask_app)
-
-    print('Connected to the db!')
-
-    with flask_app.app_context():
-        db.create_all()
-
-if __name__ == '__main__':
-    from server import app
-
-    connect_to_db(app)
