@@ -1,23 +1,22 @@
 from CovidTracker.app import app 
 from CovidTracker.crud.vaccine import get_vaccine_location_by_zipcode, get_vaccine_location_by_vaccine_id, del_vaccine_saved_locations, check_vaccine_saved_location_in_favorites, create_vaccine_saved_locations
 
-from CovidTracker.helper import format_data 
+from CovidTracker.helper import format_data, vaccine_to_geojson
 from flask import (render_template, request, session, flash, jsonify)
 
 @app.route('/vaccine')
 def search_vaccine():
-    """Get list of vaccine locations"""   
-
+    """Get list of vaccine locations"""
     zip_code = request.args.get('zip_code')
     vaccine_info = get_vaccine_location_by_zipcode(zip_code)
     data = format_data(d=vaccine_info, key='vaccine_id')
-
+    geo_data = vaccine_to_geojson(data)
     if 'user_id' in session:
         user_id = session['user_id']
     else:
         user_id = None
-        
-    return render_template('vaccine.html', data=data, user_id=user_id)
+
+    return render_template('vaccine.html', data=data, user_id=user_id, geo_data=geo_data)
 
 
 
