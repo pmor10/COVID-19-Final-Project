@@ -54,16 +54,31 @@ def format_data(d, key):
     # Return the dict data to the app.
     return data 
 
+
+
+
+
 from geojson import Feature, Point, FeatureCollection 
+
+
+
+
+
 
 def vaccine_to_geojson(data):
     geo = []
     for k,v  in data.items():
-        print(k,v)
-        geo.append(Feature(geometry=Point([
+        geo.append(
+                    Feature(geometry=Point([
                                             float(str(v['longitude'])), 
                                             float(str(v['latitude']))
-                                            ]
-                                            )))
+                                            ]),
+                            properties={
+                                            'name': v['name'],
+                                            'address': v['address']
+
+                                        }
+                            )
+                    )
     feature_collection = FeatureCollection(geo)
     return feature_collection 

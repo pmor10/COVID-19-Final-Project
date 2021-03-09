@@ -2,7 +2,7 @@ from CovidTracker.models.model import VaccineLocation, SavedVaccineLocation
 from CovidTracker.connect import db
 
 def get_vaccine_location_by_zipcode(zip_code):
-
+   
     return VaccineLocation.query.filter_by(zip_code=zip_code).all()
 
 

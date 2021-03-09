@@ -35,20 +35,11 @@
         </form>
     </div>
 </div>
-<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+<div class="vac-show-info d-md-flex flex-md-equal w-100 my-md-3 ps-md-3 invisible">
     <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 overflow-hidden">
         <div id="vaccinesResults">
             <form id="vaccine_content" action='/add_vaccine_site' method="post">
-                {% for vaccine_id, v in data.items() %}
-                    <ul class="location-details">
-                        <li class="facility-name">{{ v['name'] }}</li>
-                        <li><i class="bi bi-geo-alt-fill"></i> {{ v['address'].title() }}</li>
-                        <li><i class="bi bi-calendar2-check-fill"></i> Appointment Required</li>
-                        <li>
-                            <button id="add_button" type="button" class="save_vaccine_location btn btn-button btn-width-auto" value="{{ vaccine_id }}">Save Location</button>
-                        </li>
-                    </ul>
-                {% endfor %}
+                
             </form>
         </div>
         <div id="vaccine_info"></div>
@@ -62,10 +53,10 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiiu57hnOECo1FEQV1I4nTVR6qXus_LnI&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>    
+
     <script src="/static/js/vaccine.js"></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiiu57hnOECo1FEQV1I4nTVR6qXus_LnI&callback=initMap" type="text/javascript"></script>   
+
+
 {% endblock %}

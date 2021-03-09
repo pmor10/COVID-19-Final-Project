@@ -9,17 +9,48 @@ def search_vaccine():
     """Get list of vaccine locations"""
     zip_code = request.args.get('zip_code')
     vaccine_info = get_vaccine_location_by_zipcode(zip_code)
+    
     data = format_data(d=vaccine_info, key='vaccine_id')
-    geo_data = vaccine_to_geojson(data)
+    
     if 'user_id' in session:
         user_id = session['user_id']
     else:
         user_id = None
 
-    return render_template('vaccine.html', data=data, user_id=user_id, geo_data=geo_data)
+    return render_template('vaccine.html', data=data, user_id=user_id)
 
+@app.route('/get_geojson_by_zip', methods=['GET'])
+def get_geojson():
+    
+    zip_code = request.args.get('zip_code')
+    
+    vaccine_info = get_vaccine_location_by_zipcode(zip_code)
+    
+    data = format_data(d=vaccine_info, key='vaccine_id')
+    
+    # Geo json data 
+    geo_data = vaccine_to_geojson(data)
 
+    return geo_data
 
+@app.route('/get_zipcode_data', methods=['GET'])
+def get_zipcode_data():
+
+    zip_code = request.args.get('zip_code')
+    vaccine_info = get_vaccine_location_by_zipcode(zip_code)
+    
+    data = format_data(d=vaccine_info, key='vaccine_id')
+    
+    if 'user_id' in session:
+        user_id = session['user_id']
+    else:
+        user_id = None
+    
+    for k,v in data.items():
+        data[k]['latitude'] = float(str(data[k]['latitude']))
+        data[k]['longitude'] = float(str(data[k]['longitude']))
+
+    return jsonify(data)
 
 
 @app.route('/add_vaccine_site', methods=['POST'])
