@@ -38,7 +38,7 @@ $('#testingSearchForm').on('submit', (evt) => {
       row += '<li class="facility-name">' + name + '</li>';
       row += '<li class="bi bi-geo-alt-fill">' + addr + '</li>';
       row += '<li><i class="bi bi-calendar2-check-fill"></i> Appointment Required</li>';
-      row += '<li><button id="add_button" type="button" class="save_testing_location btn btn-button btn-width-auto" value=' + i + '>Save Location</button></li>';
+      row += '<li class="button-site"><button id="add_button" type="button" class="save_testing_location btn btn-button btn-width-auto" value=' + i + '>Save Location</button></li>';
       row += '</ul>';
       table += row ;
       

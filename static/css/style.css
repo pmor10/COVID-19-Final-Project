@@ -8,6 +8,10 @@ body{
     min-height: 100vh;
 }
 
+a {
+    cursor: pointer;
+}
+
 .site-header {
     padding: 65px 0;
     background-color: #1c516c;
