@@ -3,6 +3,10 @@
 {% block title %}
 Profile
 {% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/css/user-profile.css">
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -12,19 +16,19 @@ Profile
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/user_profile">
-              <i class="bi bi-file-earmark"></i>
+              <i class="bi bi-file-earmark-medical"></i>
               Vaccine Locations
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/testing_profile">
-              <i class="bi bi-file-earmark"></i>
+              <i class="bi bi-file-earmark-medical"></i>
               Testing Locations
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/symptoms_profile">
-              <i class="bi bi-file-earmark"></i>
+              <i class="bi bi-file-earmark-medical"></i>
               Symptoms Tracker
             </a>
           </li>
@@ -33,7 +37,7 @@ Profile
     </nav>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">User Profile</h1>
+        <h1 class="h2">Dashboard</h1>
       </div>
       <h2>Symptoms Tracker</h2>
         {% block flash_message %}

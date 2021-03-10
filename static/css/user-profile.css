@@ -1,0 +1,22 @@
+#sidebarMenu{
+    background-color: #1c516c !important;
+    min-height: 100vh;
+}
+
+.position-sticky {
+    padding: 65px 0 !important;
+}
+
+#sidebarMenu .nav-item {
+    color: #ebac00;
+    padding-bottom: 20px;
+    font-size: 18px !important;
+}
+
+.nav-item > a {
+    color: #fff;
+}
+
+.nav-item > a:hover {
+    color: #ebac00;
+}
