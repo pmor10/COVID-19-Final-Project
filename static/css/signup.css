@@ -1,0 +1,31 @@
+.signup-p {
+    padding-bottom: 35px;
+    padding-top: 10px;
+}
+
+small {
+    font-size: 11px !important;
+}
+
+.form-container {
+    max-width: 980px;
+}
+
+.col-sm-3 {
+    width: 20%;
+}
+
+
+.btn-button {
+    color: #1c516c;
+    background-color: #ebac00;
+    border-color: #ebac00;
+    font-weight: bold;
+    width: 13%;
+}
+
+.btn-button:hover {
+    background-color: #1c516c;
+    border-color: #1c516c;
+    color: #ebac00;
+}

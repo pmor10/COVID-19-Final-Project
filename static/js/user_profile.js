@@ -1,5 +1,4 @@
 "use strict";
-console.log("This is running!!!!")
 
 $('#btnRemove').on('click', (evt) => {
     evt.preventDefault();
@@ -12,3 +11,5 @@ $('#btnRemove').on('click', (evt) => {
        window.location.reload(true);
     });
   });
+
+

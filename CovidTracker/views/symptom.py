@@ -1,6 +1,6 @@
 from CovidTracker.app import app 
 from CovidTracker.crud.symptom import get_symptoms
-from CovidTracker.crud.tracker import create_symptom_tracker, get_symptom_tracker_user_id_symptoms
+from CovidTracker.crud.tracker import create_symptom_tracker, get_symptom_tracker_user_id_symptoms, del_symptom_tracker
 
 import datetime 
 
@@ -50,3 +50,16 @@ def add_symptoms():
         msg = 'Please Login'
         flash(msg)
     return jsonify(msg)
+
+
+@app.route('/delete_symptom', methods=['POST'])
+def delete_symptom():
+    """ Delete testing location from the database """
+
+    user_id = session.get('user_id', None)
+    symptom_id = request.form.get('symptom_id')
+    del_symptom_tracker(user_id, symptom_id)
+
+    flash("Location removed!")
+
+    return jsonify("Success!")

@@ -12,15 +12,6 @@
         <h1 id="testingsTitle">Testing Locations</h1>
     </div>
 </div>
-<div class="site-search">
-    <div class="search-row">
-        <p class="locations-p text-center">Search for testing locations by zipcode.</p>
-        <form class="d-flex" action="/testing" method="GET" id="testingSearchForm">
-            <input class="form-control me-2" type="search" placeholder="Search Zipcode" aria-label="Search" name="zip_code" id="zip_code" required>
-            <button id="testingsearchButton" class="testing-search btn btn-button" type="submit">Find Testing</button>
-        </form>
-    </div>
-</div>
 {% block flash_message%}
 <div class="error">
 {% with messages = get_flashed_messages() %}
@@ -34,40 +25,39 @@
 {% endwith %}
 </div>
 {% endblock %}
-<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 overflow-hidden">
-        <div id="testingsResults">
-            <form id="testing_content" action='/add_testing_site' method="post">
-                {% for test_id, v in data.items() %}
-                    <ul class="location-details">
-                        <li class="facility-name">{{ v['alterate_name'] }}</li>
-                        <li>
-                            <i class="bi bi-geo-alt-fill"></i>{{ v['address'] }}
-                            {{ v['address'] }}
-                            {{ v['state_province'] }}
-                            {{ v['zip_code'] }} 
-                        </li>
-                        <li><i class="bi bi-telephone-fill"></i> {{ v['phone_number'] }}</li> 
-                        <li><i class="bi bi-calendar2-check-fill"></i> Appointment Required</li>
-                        <li>
-                            <button id="add_button" type="button" class="save_testing_location btn btn-button btn-width-auto" value="{{ test_id }}" ><i class="bi bi-bookmark-star"></i></button>
-                        </li>
-                    </ul>
-                {% endfor %}
+<div class="display-site-info">
+    <div class="site-search">
+        <div class="search-row">
+            <p class="locations-p text-center">Search for testing locations by zipcode.</p>
+            <form class="d-flex" action="/testing" method="GET" id="testingSearchForm">
+                <input class="form-control me-2" type="search" placeholder="Search Zipcode" aria-label="Search" name="zip_code" id="zip_code" required>
+                <button id="testingsearchButton" class="testing-search btn btn-button" type="submit">Find Testing</button>
             </form>
         </div>
-        <div id="test_info"></div>
     </div>
+    <div class="testing-p">
+        <p class="site-info-p container text-center">California has partnered with OptumServe to provide free, confidential testing statewide. 
+            Tests are available for everyone, including underserved communities and individuals who are at high risk. 
+        </p>
+    </div>
+    <div class="testing-show-info d-md-flex flex-md-equal w-100 my-md-3 ps-md-3 invisible">
+        <div class="bg-light me-md-3 pt-3 px-3 py-md-5 px-md-5 overflow-hidden">
+            <div id="testingsResults">
+                <form id="testing_content" action='/add_testing_site' method="post">
 
-    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden map">
-        <div id="map"></div>
+                </form>
+            </div>
+            <div id="test_info"></div>
+        </div>
+
+        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden map">
+            <div id="map"></div>
+        </div>
     </div>
 </div>
-
-
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtmT9-GMRP4Aa7KYM6p6dDT_ieVdURI4Q&callback=initMap&libraries=&v=weekly" async></script>
     <script src="/static/js/testing.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiiu57hnOECo1FEQV1I4nTVR6qXus_LnI&callback=initMap" type="text/javascript"></script>   
 {% endblock %}

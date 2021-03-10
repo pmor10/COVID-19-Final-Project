@@ -57,3 +57,73 @@ def display_user_profile():
 
     flash('Sign Up or Log In in order to see your user profile.')
     return redirect('/')
+
+
+@app.route('/testing_profile')
+def display_testing_profile():
+    """Display user testing profile page"""
+
+    if 'user_id' in session:
+        user_id = session.get('user_id', None)
+        user = get_user_by_id(user_id)
+
+        def show_favorites(func1, func2, **kwargs):
+            
+            favorites = func1(kwargs['user_id'])
+            dataset = [] 
+
+            for fav in favorites: 
+                row = func2(getattr(fav, kwargs.get('table_id')))
+                dataset.append(row)
+
+            return format_data(d=dataset, key=kwargs.get('table_id'))
+
+        
+        test_data = show_favorites(get_testing_saved_locations, 
+                                   get_testing_location_by_test_id,
+                                   user_id=user_id, 
+                                   table_id='test_id'
+                                    )
+
+        data = {
+                'test_data': test_data, 
+                }
+
+        return render_template('testing_profile.html', user=user, data=data, enumerate=enumerate )
+
+
+
+
+@app.route('/symptoms_profile')
+def display_symptoms_profile():
+    """Display symptoms profile page"""
+
+    if 'user_id' in session:
+        user_id = session.get('user_id', None)
+        user = get_user_by_id(user_id)
+
+        def show_favorites(func1, func2, **kwargs):
+            
+            favorites = func1(kwargs['user_id'])
+            dataset = [] 
+
+            for fav in favorites: 
+                row = func2(getattr(fav, kwargs.get('table_id')))
+                dataset.append(row)
+
+            return format_data(d=dataset, key=kwargs.get('table_id'))
+
+        
+        symptom_data = show_favorites(get_symptom_tracker_user_id_symptoms,
+                                      get_symptom_by_id,
+                                      user_id=user_id, 
+                                      table_id='symptom_id'
+                                      ) 
+
+        data = {
+                'symptom_data': symptom_data
+                }
+
+        return render_template('symptoms_profile.html', user=user, data=data, enumerate=enumerate )
+
+

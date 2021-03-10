@@ -21,6 +21,12 @@
     color: #ebac00;
 }
 
+.site-info-p {
+    padding-top: 0;
+    padding-bottom: 65px;
+    max-width: 1000px;
+}
+
 .location-details {
     list-style-type: none;
 }
@@ -33,6 +39,9 @@
     width: auto;
 }
 
+.display-site-info {
+    padding-bottom: 50px;
+}
 
 .map {
     padding: 0 !important;

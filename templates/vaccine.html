@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block title %}vaccine Locations{% endblock %}
-
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="static/css/locations.css">
@@ -26,37 +25,41 @@
     {% endwith %}
     </div>
 {% endblock %}
-<div class="site-search">
-    <div class="search-row">
-        <p class="locations-p text-center">Search for vaccine locations by zipcode.</p>
-        <form class="d-flex" action="/vaccine" method="GET" id="vaccineSearchForm">
-            <input class="form-control me-2" type="search" placeholder="Search Zipcode" aria-label="Search" name="zip_code" id="zip_code" required>
-            <button id="vaccinesearchButton" class="vaccine-search btn btn-button" type="submit">Find Vaccine</button>
-        </form>
-    </div>
-</div>
-<div class="vac-show-info d-md-flex flex-md-equal w-100 my-md-3 ps-md-3 invisible">
-    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 overflow-hidden">
-        <div id="vaccinesResults">
-            <form id="vaccine_content" action='/add_vaccine_site' method="post">
-                
+<div class="display-site-info">
+    <div class="site-search">
+        <div class="search-row">
+            <p class="locations-p text-center">Search for vaccine locations by zipcode.</p>
+            <form class="d-flex" action="/vaccine" method="GET" id="vaccineSearchForm">
+                <input class="form-control me-2" type="search" placeholder="Search Zipcode" aria-label="Search" name="zip_code" id="zip_code" required>
+                <button id="vaccinesearchButton" class="vaccine-search btn btn-button" type="submit">Find Vaccine</button>
             </form>
         </div>
-        <div id="vaccine_info"></div>
     </div>
+    <div class="vaccine-p">
+        <p class="site-info-p container text-center">Vaccinations are in high demand. But you can find out when it’s your turn to get one. 
+            Sign up at  <a href="https://myturn.ca.gov/">myturn.ca.gov</a>  or call (833) 422-4255 and schedule your appointment, 
+            or get notified when appointments are available in your area.
+        </p>
+    </div>
+    <div class="vac-show-info d-md-flex flex-md-equal w-100 mt-md-3 ps-md-3 invisible">
+        <div class="bg-light me-md-3 pt-3 px-3 py-md-5 px-md-5 overflow-hidden">
+            <div id="vaccinesResults">
+                <form id="vaccine_content" action='/add_vaccine_site' method="post">
+                    
+                </form>
+            </div>
+            <div id="vaccine_info"></div>
+        </div>
 
 
-    <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden map">
-        <div id="map"></div>
+        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden map">
+            <div id="map"></div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-
     <script src="/static/js/vaccine.js"></script>
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiiu57hnOECo1FEQV1I4nTVR6qXus_LnI&callback=initMap" type="text/javascript"></script>   
-
-
 {% endblock %}

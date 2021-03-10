@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 
 {% block title %}Sign Up{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/css/signup.css">
+{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-3">
   <div class="row">
     <h1>Sign Up</h1>
   </div>
-  <div class="row">
+  <div class="signup-p row">
     <p>Sign up to save locations and track your symptoms.</p>
   </div>
-  <div class="row">
+  <div class="form-container row">
     <form id="signUpForm" action="/signup" method="POST">
           
-        <div class="form-group row">
-          <label for="signUpEmail" class="col-sm-2 col-form-label">Email:<sup><b>*</b></sup></label>
-          <div class="col-sm-10">
+        <div class="form-group row pb-4">
+          <label for="signUpEmail" class="col-sm-3 col-form-label">Email:<sup><b>*</b></sup></label>
+          <div class="col-sm-8">
             <input type="email" 
                    name="email"
                    id="signUpEmail"
@@ -26,9 +30,9 @@
         </div>
 
 
-        <div class="form-group row">
-          <label for="signUpUsername" class="col-sm-2 col-form-label">Username:<sup><b>*</b></sup></label>
-          <div class="col-sm-10">
+        <div class="form-group row pb-3">
+          <label for="signUpUsername" class="col-sm-3 col-form-label">Username:<sup><b>*</b></sup></label>
+          <div class="col-sm-8">
               <input type="text" 
                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                      title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
@@ -42,9 +46,9 @@
               <span class="text-danger">{{error}}</span>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="signUpPassword1" class="col-sm-2 col-form-label">Password:<sup><b>*</b></sup></label>
-          <div class="col-sm-10">
+        <div class="form-group row pb-3">
+          <label for="signUpPassword1" class="col-sm-3 col-form-label">Password:<sup><b>*</b></sup></label>
+          <div class="col-sm-8">
               <input type="password" 
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
@@ -59,9 +63,9 @@
         </div>
 
 
-        <div class="form-group row">
-          <label for="signUpPassword2" class="col-sm-2 col-form-label">Re-enter password:<sup><b>*</b></sup></label>
-          <div class="col-sm-10">
+        <div class="form-group row pb-3">
+          <label for="signUpPassword2" class="col-sm-3 col-form-label">Re-enter password:<sup><b>*</b></sup></label>
+          <div class="col-sm-8">
               <input type="password" 
                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
@@ -74,10 +78,7 @@
               <small id="password2Help" class="form-text text-muted">Password and re-entered password must match.</small>
           </div>
         </div>
-
-        <input type="submit" 
-               value="Submit"
-               class="btn btn-primary">
+        <input class="btn btn-button my-2" type="submit" value="Submit" class="btn btn-primary">
     </form>
   </div>
 

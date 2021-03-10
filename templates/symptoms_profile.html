@@ -31,18 +31,11 @@ Profile
         </ul>
       </div>
     </nav>
-
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">User Profile</h1>
-        <!-- <div class="btn-toolbar mb-2 mb-md-0">
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div> -->
       </div>
-      <h2>Vaccine Locations</h2>
+      <h2>Symptoms Tracker</h2>
         {% block flash_message %}
         <div class="error">
             {% with messages = get_flashed_messages() %}
@@ -62,19 +55,19 @@ Profile
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Address</th>
+              <th>Date</th>
               <th>Remove</th>
             </tr>
           </thead>
           <tbody>
-            {% for i, val in enumerate(data['vac_data'].items(), 1) %}
+            {% for i, val in enumerate(data['symptom_data'].items(), 1) %}
             <tr>
               <td>{{ i }}</td>
-              <td>{{  val[1]['name'] }}</td>
-              <td>{{ val[1]['address'] }}</td>
+              <td>{{  val[1]['symptom_name'] }}</td>
+              <td>{{ val[1]['symptom_date'] }}</td>
               <td>
-                <form id="removeVaccine" action='/delete_vaccine' method="post">
-                  <button id="btnRemove" type="submit" class="del_vaccine_location btn btn-button btn-width-auto" value="{{ val[0] }}">X</button>
+                <form id="removeSymptom" action='/delete_symptom' method="post">
+                  <button id="btnRemove" type="submit" class="del_symptom_location btn btn-button btn-width-auto" value="{{ val[0] }}">X</button>
                 </form>
               </td>
             </tr>
@@ -89,7 +82,19 @@ Profile
 {% endblock %}
 
 {% block scripts %}
-    <script src="/static/js/user_profile.js"></script>
+    <script>
+      $('#btnRemove').on('click', (evt) => {
+        evt.preventDefault();
+        let favorite = $(evt.target);
+        console.log(favorite)
+        let data = {
+             'symptom_id': favorite.val()
+          };
+        $.post('/delete_symptom', data, (res) => {
+           window.location.reload(true);
+        });
+      });
+    </script>
 {% endblock %}
 
 

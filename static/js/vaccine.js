@@ -1,6 +1,6 @@
 "use strict";
 
-$('#vaccineSearchForm ').on("submit", (evt) => {
+$('#vaccineSearchForm').on('submit', (evt) => {
   
   evt.preventDefault();
   
@@ -9,7 +9,6 @@ $('#vaccineSearchForm ').on("submit", (evt) => {
   
   $('.vac-show-info').removeClass('invisible');
   $('.vac-show-info').addClass('visible');
-
 
   $.get('/get_geojson_by_zip', data, (res) => {
     // Draws the google map markers    

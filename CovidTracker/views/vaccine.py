@@ -7,17 +7,13 @@ from flask import (render_template, request, session, flash, jsonify)
 @app.route('/vaccine')
 def search_vaccine():
     """Get list of vaccine locations"""
-    zip_code = request.args.get('zip_code')
-    vaccine_info = get_vaccine_location_by_zipcode(zip_code)
-    
-    data = format_data(d=vaccine_info, key='vaccine_id')
-    
+
     if 'user_id' in session:
         user_id = session['user_id']
     else:
         user_id = None
 
-    return render_template('vaccine.html', data=data, user_id=user_id)
+    return render_template('vaccine.html')
 
 @app.route('/get_geojson_by_zip', methods=['GET'])
 def get_geojson():

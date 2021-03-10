@@ -1,3 +1,13 @@
+html {
+    max-height: 100%;
+    overflow-x: hidden;
+}
+
+body{
+    position: relative;
+    min-height: 100vh;
+}
+
 .site-header {
     padding: 65px 0;
     background-color: #1c516c;
@@ -10,6 +20,10 @@
 }
 
 .container {
+    padding: 65px 0;
+}
+
+.container-lg {
     padding: 65px 0;
 }
 
@@ -45,24 +59,27 @@ p .btn-button:hover {
 
 .card-case {
     margin: auto !important;
-    max-width: 1122px;
+    max-width: 1400px;    
     padding-top: 35px;
 }
 
 .card {
   background-color: #1c516c !important;
-  border-radius: 2px;
-  display: inline-block;
+  border-radius: 5px;
   height: 170px;
   margin: 30px;
   position: relative;
-  width: 220px !important;
+  width: 285px !important;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .display-data {
     margin: auto;
+}
+
+.data-case {
+    padding: 65px 0;
 }
 
 .data-h {
@@ -76,7 +93,7 @@ p .btn-button:hover {
     font-weight: bold;
 }
 .symptoms-tracker {
-    background-color: #f5f5f5;
+    background-color: #ededed;
 }
 
 .symptoms-tracker .row {
@@ -98,11 +115,14 @@ p .btn-button:hover {
 }
 
 .tableauPlaceholder {
-    padding: 65px;
+    margin: 65px;
 }
 
 .footer {
+    position: absolute;
+    bottom: 0;
     margin-top: 65px;
+    width: 100%;
 }
 
 .footer .container {
