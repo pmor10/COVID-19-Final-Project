@@ -3,9 +3,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from CovidTracker.config import DB_INFO
 from flask_login import UserMixin
+from CovidTracker.connect import db, connect_to_db 
 
-
-db = SQLAlchemy()
 
 class Covid(db.Model):
     """Covid Cases Data"""
@@ -66,7 +65,7 @@ class SymptomTracker(db.Model):
     #tracker_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
     symptom_id = db.Column(db.Integer, db.ForeignKey('symptoms.symptom_id'), primary_key=True)
-    symptom_date = db.Column(db.DateTime)
+    symptom_date = db.Column(db.Date, primary_key=True)
 
 
     user = db.relationship('User', backref=db.backref('saved_symptom'))
@@ -143,3 +142,5 @@ class SavedVaccineLocation(db.Model):
 
     def __repr__(self):
         return '<Saved vaccine_id={self.vaccine_id} user_id={self.user_id}>'
+
+recreate_db = connect_to_db
