@@ -1,5 +1,5 @@
 setting.py
 env
 model_2.py
-*.DS_STORE
-*.pyc
+**/.DS_STORE
+**/.pyc
