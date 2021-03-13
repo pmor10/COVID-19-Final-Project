@@ -13,8 +13,9 @@
     </div>
 </div>
 <div class="site-search">
-  <div class="content-row">
-      <p class="symptoms-p text-center">Please check the box(s) to track your symptom(s)</p>
+  <div class="symptom-content-row">
+      <p class="symptoms-p text-center">COVID-19 affects different people in different ways. Infected people have had a wide range of symptoms reported – from mild symptoms to severe illness.
+        Symptoms may appear 2-14 days after exposure to the virus. <b>Please check the box(s) to track and monitor your symptom(s)</b></p>
   </div>
 </div>
 {% block flash_message%}
@@ -36,21 +37,21 @@
           <ul class="symptoms-list">
           {% for symptom_x, symptom_y in two_col_symptoms %}
           <li class="symptom-element">
-            <input type="checkbox" id={{symptom_x.symptom_id}} class="get_value form-check-input" value={{symptom_x.symptom_name}} name={{symptom_x.symptom_id}}>
-            <label for={{symptom_x.symptom_id}}>{{symptom_x.symptom_name}}</label><br>
+            <input type="checkbox" id={{ symptom_x.symptom_id }} class="get_value form-check-input" name="{{ symptom_x.symptom_name }}" value={{ symptom_x.symptom_id }}>
+            <label for={{symptom_x.symptom_id}}>{{ symptom_x.symptom_name }}</label><br>
           </li>
           {% endfor %}
           </ul>
           <ul class="symptoms-list">
             {% for symptom_x, symptom_y in two_col_symptoms %}
             <li class="symptom-element">
-              <input type="checkbox" id={{symptom_y.symptom_id}} class="get_value form-check-input" value={{symptom_y.symptom_name}} name={{symptom_y.symptom_id}}>
-              <label for={{symptom_y.symptom_id}}>{{symptom_y.symptom_name}}</label><br>
+              <input type="checkbox" id={{ symptom_y.symptom_id }} class="get_value form-check-input" name="{{ symptom_y.symptom_name }}" value={{ symptom_y.symptom_id }}>
+              <label for={{ symptom_y.symptom_id }}>{{ symptom_y.symptom_name }}</label><br>
             </li>
             {% endfor %}
             </ul>
       </div>
-      <div class="btn-container container d-flex justify-content-center">
+      <div class="btn-container container d-flex justify-content-center flex-column">
         <button id="add_button" class="save_symptom btn btn-button btn1-style">Add Symptoms</button>
       </div>
   </form>

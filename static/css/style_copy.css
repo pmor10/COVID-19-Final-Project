@@ -31,16 +31,20 @@ a {
     padding: 65px 0;
 }
 
+.california-h {
+    padding-bottom: 20px;
+}
+
 .landing-header {
     background-image: url("../img/covid_drs.png");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 50% 70%;;
     background-size: cover;
-    height: 68rem;
+    height: 60rem;
 }
 
 .landing-header .container {
-    padding: 176px 0 !important;
+    padding: 165px 0 !important;
     margin: auto 60px;
 }
 
@@ -58,7 +62,7 @@ a {
 }
 
 .lead {
-    max-width: 70% !important;
+    max-width: 65% !important;
 }
 
 .scroll-downs {

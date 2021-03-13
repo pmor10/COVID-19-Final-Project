@@ -1,5 +1,5 @@
 from CovidTracker.app import app 
-from CovidTracker.crud.symptom import get_symptoms
+from CovidTracker.crud.symptom import get_symptoms, get_symptom_by_id
 from CovidTracker.crud.tracker import create_symptom_tracker, get_symptom_tracker_user_id_symptoms, del_symptom_tracker
 import json 
 import datetime 
@@ -31,19 +31,22 @@ def add_symptoms():
         if symptom_count >= 3:
             msg = 'Please visit your local doctor for a checkup.'
 
-        symptoms = request.form.items()
+        data = request.get_data()
+        symptoms = json.loads(data.decode('utf-8'))['data']
         
         added_symptoms=[]
-
+        
         if symptoms:
-            for k,v in symptoms:
-                try:
-                    tracker = create_symptom_tracker(user_id, k)
-                    added_symptoms.append(v)
-                except:
-                    pass 
-            
-            msg = f'The following symptoms were added to profile: {added_symptoms}'
+            for k in symptoms:
+                symptom_id = int(k)
+                user_symptoms = [symptom.symptom_id for symptom in get_symptom_tracker_user_id_symptoms(user_id)]
+                
+                if symptom_id not in user_symptoms:
+
+                    tracker = create_symptom_tracker(user_id, symptom_id)
+                    added_symptoms.append(get_symptom_by_id(symptom_id).symptom_name)
+
+            msg = {'added_symptoms': added_symptoms}
 
     else:
         msg = 'Please Login'

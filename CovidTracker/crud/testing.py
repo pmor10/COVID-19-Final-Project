@@ -32,4 +32,6 @@ def check_testing_saved_location_in_favorites(user_id, test_id):
 
 def del_testing_saved_locations(user_id, test_id):
 
-    return SavedTestingLocation.query.filter(SavedTestingLocation.user_id==user_id, SavedTestingLocation.test_id==test_id).delete()
+    SavedTestingLocation.query.filter(SavedTestingLocation.user_id==user_id, SavedTestingLocation.test_id==test_id).delete()
+
+    db.session.commit()

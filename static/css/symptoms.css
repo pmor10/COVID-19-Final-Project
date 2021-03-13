@@ -1,5 +1,7 @@
-.content-row {
+.symptom-content-row {
     padding: 65px 0;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .symptom_container {
@@ -28,4 +30,14 @@
     width: 20px;
     height: 20px;
     border-radius: 0;
+}
+
+
+.save_symptom {
+    max-width: 145px;
+    margin: auto;
+}
+
+.display-message {
+    text-align: center;
 }
