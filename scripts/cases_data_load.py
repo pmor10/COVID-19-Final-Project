@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import requests
+import sys 
+sys.path.append('..')
 from CovidTracker.config import DB_INFO
 from sqlalchemy.engine import create_engine
 from io import StringIO

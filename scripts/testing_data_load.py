@@ -2,7 +2,8 @@ import pandas as pd
 import json
 import numpy as np
 import requests
-
+import sys 
+sys.path.append('..')
 from sqlalchemy import engine
 from CovidTracker.config import DB_INFO
 
