@@ -19,4 +19,4 @@ def index():
     hospitalized = "{:,.0f}".format(covid_cases.hospitalizedCurrently)
     totaltestresults = "{:,.0f}".format(covid_cases.totalTestResults)
 
-    return render_template('index.html', now=now,  month=month, year=year, death=death, positive=positive, hospitalizedCurrently=hospitalized, totalTestResults=totaltestresults)
+    return render_template('index_copy.html', now=now,  month=month, year=year, death=death, positive=positive, hospitalizedCurrently=hospitalized, totalTestResults=totaltestresults)
