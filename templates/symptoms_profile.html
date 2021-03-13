@@ -15,20 +15,17 @@ Profile
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/user_profile">
-              <i class="bi bi-file-earmark-medical"></i>
+            <a class="nav-link sidebar-nav active" aria-current="page" href="/user_profile">
               Saved Vaccine Locations
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item sidebar-nav">
             <a class="nav-link" href="/testing_profile">
-              <i class="bi bi-file-earmark-medical"></i>
               Saved Testing Locations
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item sidebar-nav">
             <a class="nav-link" href="/symptoms_profile">
-              <i class="bi bi-file-earmark-medical"></i>
               Track My Symptoms
             </a>
           </li>
@@ -64,17 +61,39 @@ Profile
             </tr>
           </thead>
           <tbody>
+            
+            {% set counter = namespace(value=0) %}
             {% for i, val in enumerate(data['symptom_data'].items(), 1) %}
-            <tr>
-              <td>{{ i }}</td>
-              <td>{{  val[1]['symptom_name'] }}</td>
-              <td>{{ val[1]['symptom_date'] }}</td>
-              <td>
-                <form id="removeSymptom" action='/delete_symptom' method="post">
-                  <button id="btnRemove" type="submit" class="del_symptom_location btn btn-button btn-width-auto" value="{{ val[0] }}">X</button>
-                </form>
-              </td>
-            </tr>
+                {% set counter.value = counter.value + 1 %}
+                {% if len(val[1]['saved_user']) == 1 %}
+                        <tr class="symptom-row">
+                          <td class="td-row">{{ counter.value }}</td>
+                          <td>{{  val[1]['symptom_name'] }}</td>
+                          <td class="symptom-date">{{  val[1]['saved_user'][0].symptom_date }}</td>
+                          <td>
+                            <form id="removeSymptom" action='/delete_symptom' method="post">
+                              <button id="btnRemove" type="submit" class="del_symptom_location btn btn-button btn-width-auto" value="{'symptom_id':{{ val[0] }}, 'symptom_date': '{{ val[1]['saved_user'][0].symptom_date }}' }">X</button>
+                            </form>
+                          </td>
+                        </tr>
+                {% endif %}
+
+                {% if len(val[1]['saved_user']) > 1 %}
+                        {% for v in val[1]['saved_user'] %}
+                            {% set counter.value = counter.value + 1 %}
+                            <tr class="symptom-row">
+                              <td class="td-row">{{ counter.value }}</td>
+                              <td>{{  v.symptom.symptom_name }}</td>
+                              <td class="symptom-date">{{ v.symptom_date }}</td>
+                              <td>
+                                <form id="removeSymptom" action='/delete_symptom' method="post">
+                                  <button id="btnRemove" type="submit" class="del_symptom_location btn btn-button btn-width-auto" value="{ 'symptom_id': {{ val[0]}}, 'symptom_date': '{{ v.symptom_date }}' }">X</button>
+                                </form>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                {% endif %}
+
             {% endfor %}
           </tbody>
         </table>
@@ -87,13 +106,13 @@ Profile
 
 {% block scripts %}
     <script>
-      $('#btnRemove').on('click', (evt) => {
+      $('#btnRemove ').on('click', (evt) => {
         evt.preventDefault();
-        let favorite = $(evt.target);
-        console.log(favorite)
-        let data = {
-             'symptom_id': favorite.val()
-          };
+        let data = $(evt.target).val();
+        console.log(data);
+        
+        
+
         $.post('/delete_symptom', data, (res) => {
            window.location.reload(true);
         });

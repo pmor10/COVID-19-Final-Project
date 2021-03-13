@@ -14,21 +14,18 @@ Profile
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-          <li class="nav-item">
+          <li class="nav-item sidebar-nav">
             <a class="nav-link active" aria-current="page" href="/user_profile">
-              <i class="bi bi-file-earmark-medical"></i>
               Saved Vaccine Locations
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item sidebar-nav">
             <a class="nav-link" href="/testing_profile">
-              <i class="bi bi-file-earmark-medical"></i>
               Saved Testing Locations
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item sidebar-nav">
             <a class="nav-link" href="/symptoms_profile">
-              <i class="bi bi-file-earmark-medical"></i>
               Track My Symptoms
             </a>
           </li>
@@ -74,7 +71,7 @@ Profile
             {% for i, val in enumerate(data['vac_data'].items(), 1) %}
             <tr>
               <td>{{ i }}</td>
-              <td>{{  val[1]['name'] }}</td>
+              <td>{{ val[1]['name'] }}</td>
               <td>{{ val[1]['address'] }}</td>
               <td>
                 <form id="removeVaccine" action='/delete_vaccine' method="post">

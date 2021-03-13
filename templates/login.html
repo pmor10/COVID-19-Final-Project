@@ -6,25 +6,29 @@
     <link rel="stylesheet" href="static/css/login.css">
 {% endblock %}
 {% block content %}
-<form class="form-signin text-center" id="logInForm" action="/login" method="POST">
-    <img class="mb-4" src="/static/img/login.png" alt="" width="120" height="120">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+<div class="login-box">
+  <div class="login-box-container">
+    <form class="form-signin text-center" id="logInForm" action="/login" method="POST">
+      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <label for="logInUsername" class="visually-hidden">Username</label>
-    <input type="username" id="logInUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+      <label for="logInUsername" class="visually-hidden">Username</label>
+      <input type="username" id="logInUsername" name="username" class="form-control" placeholder="Username" required autofocus>
 
-    <label for="logInPassword" class="visually-hidden">Password</label>
-    <input type="password" id="logInPassword" name="password" class="form-control" placeholder="Password" required>
-    <div class="checkbox mb-3">
-      <label>
-        <p>Have not signed up yet? Sign up <a href="/signup">here</a>.</p>
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-button" type="submit">Sign in</button>
-  </form>
+      <label for="logInPassword" class="visually-hidden">Password</label>
+      <input type="password" id="logInPassword" name="password" class="form-control" placeholder="Password" required>
+      <div class="checkbox mb-3">
+        <label>
+          <p>Have not signed up yet? Sign up <a href="/signup">here</a>.</p>
+        </label>
+      </div>
+      <button class="w-100 btn btn-lg btn1-style btn-button" type="submit">Sign in</button>
+    </form>
+  </div>
+</div>
   <div class="row mt-3">
     <p id="logInErrorMessage"></p>
-</div>
+  </div>
+
 {% endblock %}
 {% block personalScripts %}
     <!-- Personal scripts -->
