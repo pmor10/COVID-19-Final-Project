@@ -1,12 +1,30 @@
+.login-box {
+    background-image: url("../img/vectorstock_31561292.png");
+    background-repeat: no-repeat;
+    height: 70vh;
+    background-size: 65%;
+    background-position: 90%;
+    margin-left: 200px;
+}
+/* 
+.login-box-container {
+  width: 17%;
+  height: 25px;
+} */
+
 .form-signin {
     width: 100%;
-    max-width: 330px;
-    padding: 206px 0;
-    margin: auto;
+    max-width: 430px;
+    margin: 206px 0;
+    padding: 45px;
+    background-color: #b2ddec;
+    border-radius: 15px;
   }
+
   .form-signin .checkbox {
     font-weight: 400;
   }
+
   .form-signin .form-control {
     position: relative;
     box-sizing: border-box;
@@ -27,16 +45,3 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-
-  .btn-button {
-    color: #1c516c;
-    background-color: #ebac00;
-    border-color: #ebac00;
-    font-weight: bold;
-}
-
-.btn-button:hover {
-    background-color: #1c516c;
-    border-color: #1c516c;
-    color: #ebac00;
-}

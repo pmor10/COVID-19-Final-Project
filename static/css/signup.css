@@ -1,3 +1,12 @@
+.signup-box {
+    background-image: url("../img/vectorstock_30731939.png");
+    background-repeat: no-repeat;
+    height: 90vh;
+    background-size: 65%;
+    background-position: 90%;
+    margin-left: 200px;
+}
+
 .signup-p {
     padding-bottom: 35px;
     padding-top: 10px;
@@ -13,19 +22,4 @@ small {
 
 .col-sm-3 {
     width: 20%;
-}
-
-
-.btn-button {
-    color: #1c516c;
-    background-color: #ebac00;
-    border-color: #ebac00;
-    font-weight: bold;
-    width: 13%;
-}
-
-.btn-button:hover {
-    background-color: #1c516c;
-    border-color: #1c516c;
-    color: #ebac00;
 }

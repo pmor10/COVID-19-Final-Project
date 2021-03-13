@@ -1,0 +1,214 @@
+html {
+    max-height: 100%;
+    overflow-x: hidden;
+}
+
+body{
+    position: relative;
+    min-height: 100vh;
+}
+
+a {
+    cursor: pointer;
+}
+
+.site-header {
+    padding: 65px 0;
+    background-color: #438BE3;
+    color: #fff;
+}
+
+.flashes {
+    list-style-type: none;
+    
+}
+
+.container {
+    padding: 65px 0;
+}
+
+.container-lg {
+    padding: 65px 0;
+}
+
+.landing-header {
+    background-image: url("../img/covid_drs.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 68rem;
+}
+
+.landing-header .container {
+    padding: 176px 0 !important;
+    margin: auto 60px;
+}
+
+.btn1-style {
+    color: #fff !important;
+    background-color: #438BE3 !important;
+    border-color: #438BE3 !important;
+    font-weight: bold !important;
+}
+
+.btn1-style:hover {
+    background-color: #A0D1F9 !important;
+    border-color: #A0D1F9 !important;
+    color: #438BE3 !important;
+}
+
+.lead {
+    max-width: 70% !important;
+}
+
+.scroll-downs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 750px;
+    left: 0;
+    margin: auto;
+
+    width :34px;
+    height: 55px;
+}
+.mousey {
+    width: 3px;
+    padding: 10px 15px;
+    height: 35px;
+    border: 3px solid #fff;
+    border-radius: 25px;
+    opacity: 0.75;
+    box-sizing: content-box;
+}
+.scroller {
+    width: 3px;
+    height: 10px;
+    border-radius: 25%;
+    background-color: #fff;
+    animation-name: scroll;
+    animation-duration: 2.2s;
+    animation-timing-function: cubic-bezier(.15,.41,.69,.94);
+    animation-iteration-count: infinite;
+}
+@keyframes scroll {
+    0% { opacity: 0; }
+    10% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(15px); opacity: 0;}
+}
+
+.card-case {
+    margin: auto !important;
+    max-width: 1400px;    
+    padding-top: 35px;
+}
+
+.card {
+  background-color: #fff !important;
+  border-radius: 5px;
+  height: 170px;
+  margin: 30px;
+  position: relative;
+  width: 285px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.display-data {
+    margin: auto;
+}
+
+.data-case {
+    padding: 65px 0;
+}
+
+.data-h {
+    font-weight: bold;
+    color: #438BE3;
+    font-size: 27px;
+}
+.data-p {
+    font-size: 38px;
+    color: #212529;
+    font-weight: bold;
+}
+.symptoms-tracker {
+    background-color: #A0D1F9;
+}
+
+.symptoms-tracker .row {
+    margin: auto;
+    padding: 85px 0;
+}
+
+.symptom-p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn2-style:hover {
+    margin-bottom: 0;
+    background-color: #A0D1F9 !important;
+    border-color: #A0D1F9 !important;
+    color: #438BE3 !important;
+}
+
+.btn2-style {
+    margin-bottom: 0;
+    color: #fff !important;
+    background-color: #cd0045 !important;
+    border-color: #cd0045 !important;
+    font-weight: bold;
+}
+
+.btn2-style:hover {
+    margin-bottom: 0;
+    color: #fff !important;
+    background-color: #d60048 !important;
+    border-color: #d60048!important;
+}
+
+.btn3-style {
+    background-color: #A0D1F9 !important;
+    border-color: #A0D1F9 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.btn3-style:hover { 
+    color: #fff !important;
+    background-color: #438BE3 !important;
+    border-color: #438BE3 !important;
+}
+
+
+.tableauViz {
+    margin: auto !important;
+}
+
+.tableauPlaceholder {
+    margin: 65px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    margin-top: 65px;
+    width: 100%;
+}
+
+.footer .container {
+    padding: 0 !important;
+}
+
+.footer p {
+    margin-bottom: 0;
+}
+
+/* Set the size of the div element that contains the map */
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+

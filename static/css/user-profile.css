@@ -1,5 +1,5 @@
 #sidebarMenu{
-    background-color: #1c516c !important;
+    background-color: #367ed6 !important;
     min-height: 100vh;
 }
 
@@ -8,15 +8,17 @@
 }
 
 #sidebarMenu .nav-item {
-    color: #ebac00;
     padding-bottom: 20px;
     font-size: 18px !important;
 }
 
-.nav-item > a {
+#sidebarMenu .nav-item > a {
     color: #fff;
 }
 
-.nav-item > a:hover {
-    color: #ebac00;
+#sidebarMenu .nav-item > a:hover {
+    background-color: #a0d1f9;
+    color: #33629c;
+    font-weight: bold;
+    border-radius: 3px;
 }
