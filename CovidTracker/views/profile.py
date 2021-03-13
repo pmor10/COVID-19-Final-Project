@@ -6,7 +6,6 @@ from CovidTracker.crud.tracker import get_symptom_tracker_user_id_symptoms
 from CovidTracker.crud.symptom import get_symptom_by_id
 
 from CovidTracker.helper import format_data 
-
 from flask import (render_template, session, redirect, flash)
 
 
@@ -35,22 +34,8 @@ def display_user_profile():
                                   table_id='vaccine_id'
                                   )
         
-        test_data = show_favorites(get_testing_saved_locations, 
-                                   get_testing_location_by_test_id,
-                                   user_id=user_id, 
-                                   table_id='test_id'
-                                    )
-
-        symptom_data = show_favorites(get_symptom_tracker_user_id_symptoms,
-                                      get_symptom_by_id,
-                                      user_id=user_id, 
-                                      table_id='symptom_id'
-                                      ) 
-
         data = {
-                'vac_data': vac_data, 
-                'test_data': test_data, 
-                'symptom_data': symptom_data
+                'vac_data': vac_data,
                 }
 
         return render_template('user_profile.html', user=user, data=data, enumerate=enumerate )
@@ -117,13 +102,13 @@ def display_symptoms_profile():
         symptom_data = show_favorites(get_symptom_tracker_user_id_symptoms,
                                       get_symptom_by_id,
                                       user_id=user_id, 
-                                      table_id='symptom_id'
+                                      table_id='symptom_id',
                                       ) 
 
         data = {
                 'symptom_data': symptom_data
                 }
 
-        return render_template('symptoms_profile.html', user=user, data=data, enumerate=enumerate )
+        return render_template('symptoms_profile.html', user=user, data=data, enumerate=enumerate, len=len)
 
 
