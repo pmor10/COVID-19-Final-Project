@@ -18,12 +18,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -37,15 +31,16 @@
 <p>The purpose of this project is to provide a California Covid-19 Tracker that helps users find nearby testing and vaccine sites based on their location. The site leverages Google Maps API to display locations to the user and allows them to save locations to their profile. Additionally, the site allows users to securely sign up and track their symptoms over time. The site can be a helpful resource for users. The site leverages Flask backend with a combination of ,HTML, CSS, Jinja2 and Javascript frontend. Data is pulled from online API's and parsed using Pandas library. A cron job runs the Python scripts to pull the processed data  in a Postgres database. Python and Javascript are used to read and write data to the database and display it on the website.</p>
 
 
-
-### Built With
+<!-- Built with -->
+## Built With
 __Backend:__ Flask, Python3, SQLAlchemy, JSON \
 __Frontend:__  JavaScript, HTML5, CSS3, Bootstrap, jQuery, Ajax\
 __Database:__ PostgreSQL\
 __API:__ Google Map API, VaccineCA, Covidtracking \
 
 
-### Installation
+<!-- Installation steps -->
+## Installation
 Requirements:
 PostgreSQL\
 Python 3\
