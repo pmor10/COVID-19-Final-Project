@@ -43,7 +43,7 @@ Create and activate a virtual environment:`
 `$ virtualenv env
 `$ source env/bin/activate
 
-##Install dependencies:##
+__Install dependencies:__
 
 `(env) $ pip3 install -r requirements.txt
 
