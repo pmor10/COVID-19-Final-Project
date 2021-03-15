@@ -21,18 +21,18 @@
 <!-- Built with -->
 ## Built With
 __Backend:__ Flask, Python3, SQLAlchemy, JSON \
-__Frontend:__  JavaScript, HTML5, CSS3, Bootstrap, jQuery, Ajax\
+__Frontend:__  JavaScript, HTML5, CSS3, Bootstrap, Jinja, jQuery, Ajax\
 __Database:__ PostgreSQL\
-__API:__ Google Map API, VaccineCA, Covidtracking \
+__API:__ Google Maps JavaScript API, Google Geocoding API, VaccineCA API, Covidtracking API
 
 
 <!-- Installation steps -->
 ## Installation
 Requirements:
 PostgreSQL\
-Python 3\
+Python 3
 
-Steps to get running :\
+Steps to get running :
 
 Clone repository:
 
@@ -54,4 +54,6 @@ In order to reactivate it:
 
 `source .env/bin/activate`
 
+## About The Developer
+Covid-19 Tracker was created by Paresa Morton, a software engineer in San Francisco Bay Area. Learn more about the developer on [LinkedIn](https://www.linkedin.com/in/pmor10/).
 
