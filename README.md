@@ -8,6 +8,7 @@
     <li><a href="#about-the-project">About The Project</a></li> 
     <li><a href="#built-with">Built With</a></li>
     <li><a href="#installation">Installation</a></li>
+    <li><a href="#about-the-developer">About the Developer</a></li>
   </ol>
 </details>
 
