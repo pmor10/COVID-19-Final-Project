@@ -21,11 +21,17 @@
 ## User Registration 
 ![california-covid-19-app](Covid_19_Tracker_Gifs/signup.gif)
 
-## User Login | Vaccine Locations & Testing Locations
-![california-covid-19-app](Covid_19_Tracker_Gifs/part2.gif)
+## User Login 
+![california-covid-19-app](Covid_19_Tracker_Gifs/signin.gif)
 
-## Symptoms Tracker | User Dashboard
-![california-covid-19-app](Covid_19_Tracker_Gifs/part3.gif)
+## Vaccine Locations
+
+## Testing Locations
+
+## Symptoms Tracker
+
+## User Dashboard
+
 
 <!-- Built with -->
 ## Built With
