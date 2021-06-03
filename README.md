@@ -12,6 +12,20 @@
   </ol>
 </details>
 
+<!-- PROJECT FEATURES -->
+<details open="open">
+  <summary>Project Features</summary>
+  <ol>
+    <li><a href="#landing-page">Landing Page</a></li> 
+    <li><a href="#user-registration">User Registration</a></li>
+    <li><a href="#user-login">User Login</a></li>
+    <li><a href="#vaccine-locations">Vaccine Locations</a></li>
+    <li><a href="#testing-locations">Testing Locations</a></li>
+    <li><a href="#symptoms-tracker">Symptoms Tracker</a></li>
+    <li><a href="#user-dashboard">User Dashboard</a></li>
+  </ol>
+</details>
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
